@@ -1,3 +1,7 @@
+// DisplayUserView and all the books they have checked-out
+// What are some other Views you could make that would be commonly used? (e.g. SearchView)
+// 
+
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app;
 using mvc_console_app.Controllers;
@@ -26,6 +30,7 @@ public class MainMenuView
             "Search Books",
             "Checkout Books",
             "Return Book",
+            "Display All Members", 
             "Exit"
         ];
 
@@ -48,6 +53,9 @@ public class MainMenuView
                     ReturnBookFlow();
                     break;
                 case 5:
+                    DisplayAllMembersFlow();
+                    return;
+                case 6:
                     return;
                 default:
                     break;
@@ -59,6 +67,7 @@ public class MainMenuView
     {
         var member = PromptUserForMember();
 
+        // TODO: 
         var book = PromptUserForBook(Controller.GetAllBooks());
 
         if (Controller.CheckoutBook(member, book))
@@ -75,6 +84,12 @@ public class MainMenuView
         var books = Controller.GetAllBooks();
 
         PresentBooks("All Books", books);
+    }
+
+    private void DisplayAllMembersFlow()
+    {
+        DisplayAllMembersView displayAllMembersView = new DisplayAllMembersView(Controller, Ui);
+        displayAllMembersView.Present();
     }
 
     private void PresentBooks(string presentationTitle, IEnumerable<Book?> books)
