@@ -1,6 +1,6 @@
 // DisplayUserView and all the books they have checked-out
-// What are some other Views you could make that would be commonly used? (e.g. SearchView)
-// 
+// What are some other Views you could make that would be commonly used?
+// GetBooksView
 
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app;

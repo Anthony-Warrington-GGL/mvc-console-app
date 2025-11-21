@@ -5,7 +5,7 @@ public class DisplayAllMembersView
 {
     private LibraryController Controller {get;}
     private IUserInterface Ui {get;}
-    // needs controller & ui
+    
     public DisplayAllMembersView (LibraryController controller, IUserInterface ui)
     {
         Controller = controller;
