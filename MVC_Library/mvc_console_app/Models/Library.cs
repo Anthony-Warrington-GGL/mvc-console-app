@@ -89,24 +89,28 @@ public class LibraryModel : ILibrary
         LibraryMembers.Add(member);
     }
 
-    public void CheckoutBook(Member member, Book book)
+    public bool CheckoutBook(Member member, Book book)
     {
         if (Books.Remove(book))
         {
             book.CheckedOutDate = DateTime.Now;
             book.IsAvailable = false;
             member.BorrowedBooks.Add(book);
+            return true;
         }
+        return false;
     }
 
-    public void ReturnBook(Member member, Book book)
+    public bool ReturnBook(Member member, Book book)
     {
         if (member.BorrowedBooks.Remove(book))
         {
             book.CheckedOutDate = null;
             book.IsAvailable = true;
             Books.Add(book);
+            return true;
         }
+        return false;
     }
 
     public IEnumerable<Book> GetBooksCheckedOutByMember(Member member)

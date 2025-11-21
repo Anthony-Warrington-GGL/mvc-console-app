@@ -6,7 +6,8 @@ using mvc_console_app.Views;
 // new library
 var library = new LibraryModel();
 LibraryInitializer.Initialize(library);
-var view = new ConsoleView();
-var controller = new LibraryController(library, view);
+var controller = new LibraryController(library);
+var ui = new ConsoleUi();
+var mainView = new MainMenuView(controller, ui);
 
-controller.Start();
+mainView.Present();

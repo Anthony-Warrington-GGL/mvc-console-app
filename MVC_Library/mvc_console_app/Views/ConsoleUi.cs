@@ -1,6 +1,5 @@
-namespace mvc_console_app.Views;
-// 
-public class ConsoleView
+namespace mvc_console_app.Views; 
+public class ConsoleUi : IUserInterface
 {
     public int PresentMenu(string title, List<string> options) // TODO: give a list of objects and return an object based on what is selected
     {

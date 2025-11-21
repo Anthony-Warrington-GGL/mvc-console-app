@@ -19,8 +19,8 @@ public interface ILibrary
     void AddMember(Member libraryMember);
 
     // Checkout/Return operations
-    void CheckoutBook(Member libraryMember, Book book);
-    void ReturnBook(Member libraryMember, Book book);
+    bool CheckoutBook(Member libraryMember, Book book);
+    bool ReturnBook(Member libraryMember, Book book);
 
     // Queries
     IEnumerable<Book> GetBooksCheckedOutByMember(Member libraryMember);
