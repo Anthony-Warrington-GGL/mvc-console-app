@@ -84,9 +84,13 @@ public class LibraryModel : ILibrary
         return null;
     }
 
-    public void AddMember(Member member)
+    public bool AddMember(Member member)
     {
-        LibraryMembers.Add(member);
+        if (LibraryMembers.Add(member))
+        {
+            return true;
+        }
+        return false;
     }
 
     public bool CheckoutBook(Member member, Book book)

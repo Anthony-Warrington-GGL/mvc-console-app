@@ -1,6 +1,6 @@
 // DisplayUserView and all the books they have checked-out
 // What are some other Views you could make that would be commonly used?
-// GetBooksView
+// GetBooksView, AddNewMemberView
 
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app;
@@ -30,7 +30,8 @@ public class MainMenuView
             "Search Books",
             "Checkout Books",
             "Return Book",
-            "Display All Members", 
+            "Display All Members",
+            "Add New Member",
             "Exit"
         ];
 
@@ -54,14 +55,23 @@ public class MainMenuView
                     break;
                 case 5:
                     DisplayAllMembersFlow();
-                    return;
+                    break;
                 case 6:
-                    return;
+                    AddNewMemberFlow();
+                    break;
+                case 7:
+                    return; // exit program
                 default:
                     break;
             }
         }
     } 
+
+    private void AddNewMemberFlow()
+    {
+        AddNewMemberView addNewMemberView = new AddNewMemberView(Controller, Ui);
+        addNewMemberView.Present();
+    }
 
     private void CheckoutBooksFlow()
     {

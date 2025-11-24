@@ -16,7 +16,7 @@ public interface ILibrary
 
     // LibraryMember operations
     IEnumerable<Member> GetAllMembers();
-    void AddMember(Member libraryMember);
+    bool AddMember(Member libraryMember);
 
     // Checkout/Return operations
     bool CheckoutBook(Member libraryMember, Book book);

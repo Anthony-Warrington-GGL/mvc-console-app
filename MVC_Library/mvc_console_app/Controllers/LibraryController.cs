@@ -21,6 +21,11 @@ public class LibraryController
         Library.AddBook(new Book(id, title, author));
     }
 
+    public bool AddNewMember(Member member)
+    {
+        return Library.AddMember(member);
+    }
+
     public bool CheckoutBook (Member? member, Book? book)
     {    
         if (member is null || book is null)
