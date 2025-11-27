@@ -6,22 +6,25 @@ public class LibraryModel : ILibrary
 
     private HashSet<Member> LibraryMembers;
 
+    private int LastUsedId {get; set;} = 1;
+
     public LibraryModel()
     {
         LibraryMembers = new HashSet<Member>();
     }
 
-    public void AddBook(Book book)
+    public Book CreateBook(string author, string title)
     {
-        Books.Add(book);
+        // get an id
+        // create the book object
+        // try to add the book to the library
+        // return the book if it was successful
+        throw new NotImplementedException();
     }
 
-    public void AddBooks(IEnumerable<Book> books)
+    public IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books)
     {
-        foreach(Book book in books)
-        {
-            Books.Add(book);
-        }
+        throw new NotImplementedException();
     }
 
     public IEnumerable<Book> GetAllBooks()
@@ -84,13 +87,17 @@ public class LibraryModel : ILibrary
         return null;
     }
 
-    public bool AddMember(Member member)
+    public Member CreateMember(string firstName, string lastName)
     {
+        // get a int for the id - one that doesn't already exist
+        Member member = new Member(GetNextAvailableId(), firstName, lastName);
+        
         if (LibraryMembers.Add(member))
         {
-            return true;
+            return member;            
         }
-        return false;
+        
+        throw new InvalidOperationException("Couldn't add member.");
     }
 
     public bool CheckoutBook(Member member, Book book)
@@ -120,5 +127,10 @@ public class LibraryModel : ILibrary
     public IEnumerable<Book> GetBooksCheckedOutByMember(Member member)
     {
         return member.BorrowedBooks;
+    }
+
+    private int GetNextAvailableId()
+    {
+        return LastUsedId++;
     }
 }

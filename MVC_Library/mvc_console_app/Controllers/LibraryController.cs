@@ -21,9 +21,9 @@ public class LibraryController
         Library.AddBook(new Book(id, title, author));
     }
 
-    public bool AddNewMember(Member member)
+    public Member CreateNewMember(string firstName, string lastName)
     {
-        return Library.AddMember(member);
+        return Library.CreateMember(firstName, lastName);
     }
 
     public bool CheckoutBook (Member? member, Book? book)
