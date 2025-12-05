@@ -1,4 +1,4 @@
-namespace mvc_console_app;
+namespace mvc_console_app.Interfaces;
 
 public interface IUserInterface
 {

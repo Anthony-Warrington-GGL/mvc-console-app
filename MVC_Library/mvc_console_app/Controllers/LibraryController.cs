@@ -1,7 +1,5 @@
-using System.Data.Common;
-using System.Runtime.CompilerServices;
+using mvc_console_app.Interfaces;
 using mvc_console_app.Models;
-using mvc_console_app.Views;
 
 namespace mvc_console_app.Controllers;
 
@@ -14,26 +12,31 @@ public class LibraryController
         Library = library;
     }
 
-    public void AddBook(string author, string title)
+    public Book CreateBook(string author, string title)
     {
-        var rand = new Random();
-        var id = rand.Next(0, 100);
-        Library.AddBook(new Book(id, title, author));
+        return Library.CreateBook(author, title);
     }
 
-    public Member CreateNewMember(string firstName, string lastName)
+    public Member CreateMember(string firstName, string lastName)
     {
         return Library.CreateMember(firstName, lastName);
     }
 
-    public bool CheckoutBook (Member? member, Book? book)
-    {    
-        if (member is null || book is null)
+    public bool CheckoutBook (Guid memberId, Guid bookId)
+    {
+        try
+        {
+            Library.CheckoutBook(memberId, bookId);
+            return true;
+        }
+        catch(ArgumentException)
         {
             return false;
-        }    
-
-        return Library.CheckoutBook(member, book);
+        }
+        catch(InvalidOperationException)
+        {
+            return false;
+        }
     }
 
     public IEnumerable<Book> GetAllBooks()
@@ -46,7 +49,7 @@ public class LibraryController
         return Library.GetAllMembers();
     }
 
-    public Book? GetBookById(int id)
+    public Book? GetBookById(Guid id)
     {
         return Library.GetBookById(id);
     }

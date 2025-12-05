@@ -1,25 +1,29 @@
+using mvc_console_app.Interfaces;
+
 namespace mvc_console_app.Models;
 
 public class LibraryModel : ILibrary
 {
-    private HashSet<Book> Books { get; set; } = new HashSet<Book>();
+    private HashSet<Book> Books { get; set; } = [];
 
-    private HashSet<Member> LibraryMembers;
+    private HashSet<Member> LibraryMembers {get;} = [];
 
-    private int LastUsedId {get; set;} = 1;
+    private IGuidManager GuidManager {get;}
 
-    public LibraryModel()
+    public LibraryModel(IGuidManager guidManager)
     {
-        LibraryMembers = new HashSet<Member>();
+        GuidManager = guidManager;
     }
 
     public Book CreateBook(string author, string title)
     {
-        // get an id
-        // create the book object
-        // try to add the book to the library
-        // return the book if it was successful
-        throw new NotImplementedException();
+        Book book = new Book(GuidManager.GetNewGuid(), title, author);
+
+        if (Books.Add(book))
+        {
+            return book;
+        }
+        throw new InvalidOperationException("Couldn't add book to library.");
     }
 
     public IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books)
@@ -32,9 +36,9 @@ public class LibraryModel : ILibrary
         return Books;
     }
 
-    public Book? GetBookById(int id)
+    public Book? GetBookById(Guid id, IEnumerable<Book> books)
     {
-        foreach (Book b in Books)
+        foreach (Book b in books)
         {
             if (b.Id == id)
             {
@@ -75,7 +79,7 @@ public class LibraryModel : ILibrary
         return LibraryMembers;
     }
 
-    public Member? GetMemberById(int memberId)
+    public Member? GetMemberById(Guid memberId)
     {
         foreach (Member lm in LibraryMembers)
         {
@@ -90,7 +94,7 @@ public class LibraryModel : ILibrary
     public Member CreateMember(string firstName, string lastName)
     {
         // get a int for the id - one that doesn't already exist
-        Member member = new Member(GetNextAvailableId(), firstName, lastName);
+        Member member = new Member(GuidManager.GetNewGuid(), firstName, lastName);
         
         if (LibraryMembers.Add(member))
         {
@@ -100,37 +104,49 @@ public class LibraryModel : ILibrary
         throw new InvalidOperationException("Couldn't add member.");
     }
 
-    public bool CheckoutBook(Member member, Book book)
+    public void CheckoutBook(Guid memberGuid, Guid bookGuid)
     {
+        Book? book = GetBookById(bookGuid, Books);
+        Member? member = GetMemberById(memberGuid);
+        if (book is null || member is null)
+        {
+            throw new ArgumentException("Book or member not found.");
+        }
+        
         if (Books.Remove(book))
         {
             book.CheckedOutDate = DateTime.Now;
-            book.IsAvailable = false;
             member.BorrowedBooks.Add(book);
-            return true;
         }
-        return false;
+        else
+        {
+            throw new InvalidOperationException();
+        }
     }
 
-    public bool ReturnBook(Member member, Book book)
+    public void ReturnBook(Guid memberGuid, Guid bookGuid)
     {
+        Member? member = GetMemberById(memberGuid);
+        Book? book = GetBookById(bookGuid, member?.BorrowedBooks ?? []);
+        
+        if (book is null || member is null)
+        {
+            throw new ArgumentException("Book or member not found.");
+        }
+
         if (member.BorrowedBooks.Remove(book))
         {
             book.CheckedOutDate = null;
-            book.IsAvailable = true;
             Books.Add(book);
-            return true;
         }
-        return false;
+        else
+        {
+            throw new InvalidOperationException();
+        }
     }
 
     public IEnumerable<Book> GetBooksCheckedOutByMember(Member member)
     {
         return member.BorrowedBooks;
-    }
-
-    private int GetNextAvailableId()
-    {
-        return LastUsedId++;
     }
 }

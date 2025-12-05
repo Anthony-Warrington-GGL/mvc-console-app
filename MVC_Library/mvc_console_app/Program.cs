@@ -4,7 +4,8 @@ using mvc_console_app.Models;
 using mvc_console_app.Views;
 
 // new library
-var library = new LibraryModel();
+var guidManager = new GuidManager();
+var library = new LibraryModel(guidManager);
 LibraryInitializer.Initialize(library);
 var controller = new LibraryController(library);
 var ui = new ConsoleUi();
