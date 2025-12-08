@@ -5,6 +5,7 @@
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app;
 using mvc_console_app.Controllers;
+using mvc_console_app.Interfaces;
 using mvc_console_app.Models;
 
 // Controls User Interface flow 
@@ -75,16 +76,16 @@ public class MainMenuView
 
     private void CheckoutBooksFlow()
     {
-        var member = PromptUserForMember();
+        // var member = PromptUserForMember();
 
-        // TODO: 
-        var book = PromptUserForBook(Controller.GetAllBooks());
+        // // TODO: 
+        // var book = PromptUserForBook(Controller.GetAllBooks());
 
-        if (Controller.CheckoutBook(member, book))
-        {
-            Ui.PresentItems("Success", 
-                [$"{member?.FirstName} {member?.LastName} has checked out \"{book?.Title}\" by {book?.Author}."]);            
-        }
+        // if (Controller.CheckoutBook(member, book))
+        // {
+        //     Ui.PresentItems("Success", 
+        //         [$"{member?.FirstName} {member?.LastName} has checked out \"{book?.Title}\" by {book?.Author}."]);            
+        // }
         // TODO: Else throw
     }
 
@@ -217,9 +218,9 @@ public class MainMenuView
                 PresentBooks($"Books titled \"{titleSearchString}\"", titleSearchResults);
                 break;
             case 3:
-                int idSearchInt = Ui.GetIntInput("Enter Book ID: ");
-                List<Book?> booksToPresent = [Controller.GetBookById(idSearchInt)];
-                PresentBooks($"Books with ID of {idSearchInt}: ", booksToPresent);
+                // int idSearchInt = Ui.GetIntInput("Enter Book ID: ");
+                // List<Book?> booksToPresent = [Controller.GetBookById(idSearchInt)];
+                // PresentBooks($"Books with ID of {idSearchInt}: ", booksToPresent);
                 break;
         }
     }

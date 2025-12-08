@@ -11,6 +11,11 @@ public class Book
 
     public Book(Guid id, string title, string author)
     {
+        if (author is null || title is null)
+        {
+            throw new ArgumentNullException();
+        }
+
         this.Id = id;
         this.Title = title;
         this.Author = author;

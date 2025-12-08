@@ -1,3 +1,5 @@
+using mvc_console_app.Interfaces;
+
 namespace mvc_console_app.Views; 
 public class ConsoleUi : IUserInterface
 {
