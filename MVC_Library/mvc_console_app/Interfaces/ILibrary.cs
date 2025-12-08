@@ -5,14 +5,13 @@ namespace mvc_console_app.Interfaces;
 
 public interface ILibrary
 {    
-    //TODO: Implement the GUIDs where necessary
-    // 
+// TODO: Go through the methods and decide which should throw exceptions
 
     /// <summary>
     /// Checks out a book to a library member, marking it as unavailable and adding it to the member's borrowed books
     /// </summary>
-    /// <param name="libraryMember">The member checking out the book</param>
-    /// <param name="book">The book to be checked out</param>
+    /// <param name="memberId">The member checking out the book</param>
+    /// <param name="bookId">The book to be checked out</param>
     /// <exception cref="ArgumentException"> When an invalid member or book ID is passed </exception>
     /// <exception cref="InvalidOperationException"> For whatever other reason the book checkout failed </exception>
     void CheckoutBook(Guid memberId, Guid bookId);
@@ -31,6 +30,7 @@ public interface ILibrary
     /// </summary>
     /// <param name="books">A list of tuples containing author and title information</param>
     /// <returns>An enumerable collection of created <see cref="Book"/> objects</returns>
+    /// <exception cref="InvalidOperationException"> When a book can't be created</exception>
     IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books);
 
     /// <summary>
@@ -78,9 +78,10 @@ public interface ILibrary
     /// <summary>
     /// Retrieves all books currently checked out by a specific member
     /// </summary>
-    /// <param name="libraryMember">The member whose borrowed books to retrieve</param>
+    /// <param name="memberId">The member's id</param>
     /// <returns>An enumerable collection of <see cref="Book"/> objects currently borrowed by the member</returns>
-    IEnumerable<Book> GetBooksCheckedOutByMember(Member libraryMember);
+    /// <exception cref="ArgumentException"> When no member exists with <paramref name="memberId"/> </exception>
+    IEnumerable<Book> GetBooksCheckedOutByMember(Guid memberId);
 
     /// <summary>
     /// Finds and returns a specific library member by their unique identifier
@@ -96,5 +97,5 @@ public interface ILibrary
     /// <param name="bookGuid">The book being returned</param>
     /// <exception cref="ArgumentException"> When an invalid member or book ID is passed </exception>
     /// <exception cref="InvalidOperationException"> For whatever other reason the book checkout failed </exception>
-    void ReturnBook(Guid memberGuid, Guid bookGuid);
+    void ReturnBook(Guid memberId, Guid bookId);
 }

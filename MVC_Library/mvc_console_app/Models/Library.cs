@@ -15,6 +15,7 @@ public class LibraryModel : ILibrary
         GuidManager = guidManager;
     }
 
+    /// <inheritdoc/>
     public Book CreateBook(string author, string title)
     {
         Book book = new Book(GuidManager.GetNewGuid(), title, author);
@@ -28,7 +29,15 @@ public class LibraryModel : ILibrary
 
     public IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books)
     {
-        throw new NotImplementedException();
+        var createdBooks = new List<Book>();
+        
+        foreach (var (author, title) in books)
+        {
+            Book book = CreateBook(author, title);
+            createdBooks.Add(book);
+        }
+        
+        return createdBooks;
     }
 
     public IEnumerable<Book> GetAllBooks()
@@ -36,9 +45,9 @@ public class LibraryModel : ILibrary
         return Books;
     }
 
-    public Book? GetBookById(Guid id, IEnumerable<Book> books)
+    public Book? GetBookById(Guid id)
     {
-        foreach (Book b in books)
+        foreach (Book b in Books)
         {
             if (b.Id == id)
             {
@@ -106,7 +115,7 @@ public class LibraryModel : ILibrary
 
     public void CheckoutBook(Guid memberGuid, Guid bookGuid)
     {
-        Book? book = GetBookById(bookGuid, Books);
+        Book? book = GetBookById(bookGuid);
         Member? member = GetMemberById(memberGuid);
         if (book is null || member is null)
         {
@@ -124,10 +133,10 @@ public class LibraryModel : ILibrary
         }
     }
 
-    public void ReturnBook(Guid memberGuid, Guid bookGuid)
+    public void ReturnBook(Guid memberGuid, Guid bookId)
     {
         Member? member = GetMemberById(memberGuid);
-        Book? book = GetBookById(bookGuid, member?.BorrowedBooks ?? []);
+        Book? book = GetBookFromCollection(bookId, member?.BorrowedBooks ?? []);
         
         if (book is null || member is null)
         {
@@ -145,8 +154,27 @@ public class LibraryModel : ILibrary
         }
     }
 
-    public IEnumerable<Book> GetBooksCheckedOutByMember(Member member)
+    public IEnumerable<Book> GetBooksCheckedOutByMember(Guid memberId)
     {
-        return member.BorrowedBooks;
+        Member? member = GetMemberById(memberId);
+
+        if (member is null)
+        {
+            throw new ArgumentException("Member not found.");
+        }
+
+        return [.. member.BorrowedBooks];
+    } 
+
+    private Book? GetBookFromCollection(Guid bookId, IEnumerable<Book> books)
+    {
+        foreach (Book book in books)
+        {
+            if (book.Id == bookId)
+            {
+                return book;
+            }
+        }
+        return null;
     }
 }
