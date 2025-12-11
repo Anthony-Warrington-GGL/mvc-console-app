@@ -23,6 +23,10 @@ public class Book
         CheckedOutDate = null;
     }
 
+    /// <summary>
+    /// Returns whether or not the Book is overdue
+    /// </summary>
+    /// <returns>true if the current time is greater than the book's checked-out date plus 14 days, or false if not</returns>
     public bool IsOverdue()
     {
         if (CheckedOutDate == null)

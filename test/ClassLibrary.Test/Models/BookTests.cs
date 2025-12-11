@@ -121,11 +121,11 @@ public sealed class BookTests
     }
 
     [TestMethod]
-    public void IsOverdue__when_CheckedOutDate_is_within_14_days__then_returns_false()
+    public void IsOverdue__when_CheckedOutDate_is_within_14_days_in_the_past__then_returns_false()
     {
         // Arrange
         var book = new Book(Guid.NewGuid(), "Test Title", "Test Author");
-        book.CheckedOutDate = DateTime.Now.AddDays(10);
+        book.CheckedOutDate = DateTime.Now.AddDays(-10);
 
         // Act
         bool result = book.IsOverdue();
@@ -135,11 +135,11 @@ public sealed class BookTests
     }
 
     [TestMethod]
-    public void IsOverdue__when_CheckedOutDate_is_more_than_14_days__then_returns_true()
+    public void IsOverdue__when_CheckedOutDate_is_more_than_14_days_in_the_past__then_returns_true()
     {
         // Arrange
         var book = new Book(Guid.NewGuid(), "Test Title", "Test Author");
-        book.CheckedOutDate = DateTime.Now.AddDays(15);
+        book.CheckedOutDate = DateTime.Now.AddDays(-15);
 
         // Act
         bool result = book.IsOverdue();

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mvc_console_app\mvc_console_app.csproj" />
+    <ProjectReference Include="..\..\src\ClassLibrary\ClassLibrary.csproj" />
   </ItemGroup>
 
 </Project>
