@@ -4,62 +4,62 @@ namespace mvc_console_app.Models;
 
 public static class LibraryInitializer
 {
-    public static IEnumerable<Book> InitialBooks { get; } =
+    public static IEnumerable<(string title, string author)> InitialBooks { get; } =
     [
-    // new (1, "To Kill a Mockingbird", "Harper Lee"),
-    // new (2, "1984", "George Orwell"),
-    // new (3, "Pride and Prejudice", "Jane Austen"),
-    // new (4, "The Great Gatsby", "F. Scott Fitzgerald"),
-    // new (5, "The Catcher in the Rye", "J.D. Salinger"),
-    // new (6, "The Lord of the Rings", "J.R.R. Tolkien"),
-    // new (7, "Animal Farm", "George Orwell"),
-    // new (8, "Jane Eyre", "Charlotte Brontë"),
-    // new (9, "Wuthering Heights", "Emily Brontë"),
-    // new (10, "The Hobbit", "J.R.R. Tolkien"),
-    // new (11, "Brave New World", "Aldous Huxley"),
-    // new (12, "The Chronicles of Narnia", "C.S. Lewis"),
-    // new (13, "Crime and Punishment", "Fyodor Dostoevsky"),
-    // new (14, "The Picture of Dorian Gray", "Oscar Wilde"),
-    // new (15, "Frankenstein", "Mary Shelley"),
-    // new (16, "Dracula", "Bram Stoker"),
-    // new (17, "Moby Dick", "Herman Melville"),
-    // new (18, "War and Peace", "Leo Tolstoy"),
-    // new (19, "The Odyssey", "Homer"),
-    // new (20, "The Iliad", "Homer"),
-    // new (21, "Don Quixote", "Miguel de Cervantes"),
-    // new (22, "The Divine Comedy", "Dante Alighieri"),
-    // new (23, "Great Expectations", "Charles Dickens"),
-    // new (24, "A Tale of Two Cities", "Charles Dickens"),
-    // new (25, "Oliver Twist", "Charles Dickens"),
-    // new (26, "The Adventures of Huckleberry Finn", "Mark Twain"),
-    // new (27, "The Adventures of Tom Sawyer", "Mark Twain"),
-    // new (28, "Alice's Adventures in Wonderland", "Lewis Carroll"),
-    // new (29, "The Little Prince", "Antoine de Saint-Exupéry"),
-    // new (30, "One Hundred Years of Solitude", "Gabriel García Márquez"),
-    // new (31, "The Grapes of Wrath", "John Steinbeck"),
-    // new (32, "Of Mice and Men", "John Steinbeck"),
-    // new (33, "The Old Man and the Sea", "Ernest Hemingway"),
-    // new (34, "For Whom the Bell Tolls", "Ernest Hemingway"),
-    // new (35, "The Sun Also Rises", "Ernest Hemingway"),
-    // new (36, "Fahrenheit 451", "Ray Bradbury"),
-    // new (37, "The Handmaid's Tale", "Margaret Atwood"),
-    // new (38, "Slaughterhouse-Five", "Kurt Vonnegut"),
-    // new (39, "Catch-22", "Joseph Heller"),
-    // new (40, "Lord of the Flies", "William Golding"),
-    // new (41, "The Road", "Cormac McCarthy"),
-    // new (42, "Beloved", "Toni Morrison"),
-    // new (43, "The Color Purple", "Alice Walker"),
-    // new (44, "Invisible Man", "Ralph Ellison"),
-    // new (45, "The Bell Jar", "Sylvia Plath"),
-    // new (46, "On the Road", "Jack Kerouac"),
-    // new (47, "A Clockwork Orange", "Anthony Burgess"),
-    // new (48, "The Shining", "Stephen King"),
-    // new (49, "Dune", "Frank Herbert"),
-    // new (50, "Foundation", "Isaac Asimov")
+        new ("To Kill a Mockingbird", "Harper Lee"),
+        new ("1984", "George Orwell"),
+        new ("Pride and Prejudice", "Jane Austen"),
+        new ("The Great Gatsby", "F. Scott Fitzgerald"),
+        new ("The Catcher in the Rye", "J.D. Salinger"),
+        new ("The Lord of the Rings", "J.R.R. Tolkien"),
+        new ("Animal Farm", "George Orwell"),
+        new ("Jane Eyre", "Charlotte Brontë"),
+        new ("Wuthering Heights", "Emily Brontë"),
+        new ("The Hobbit", "J.R.R. Tolkien"),
+        new ("Brave New World", "Aldous Huxley"),
+        new ("The Chronicles of Narnia", "C.S. Lewis"),
+        new ("Crime and Punishment", "Fyodor Dostoevsky"),
+        new ("The Picture of Dorian Gray", "Oscar Wilde"),
+        new ("Frankenstein", "Mary Shelley"),
+        new ("Dracula", "Bram Stoker"),
+        new ("Moby Dick", "Herman Melville"),
+        new ("War and Peace", "Leo Tolstoy"),
+        new ("The Odyssey", "Homer"),
+        new ("The Iliad", "Homer"),
+        new ("Don Quixote", "Miguel de Cervantes"),
+        new ("The Divine Comedy", "Dante Alighieri"),
+        new ("Great Expectations", "Charles Dickens"),
+        new ("A Tale of Two Cities", "Charles Dickens"),
+        new ("Oliver Twist", "Charles Dickens"),
+        new ("The Adventures of Huckleberry Finn", "Mark Twain"),
+        new ("The Adventures of Tom Sawyer", "Mark Twain"),
+        new ("Alice's Adventures in Wonderland", "Lewis Carroll"),
+        new ("The Little Prince", "Antoine de Saint-Exupéry"),
+        new ("One Hundred Years of Solitude", "Gabriel García Márquez"),
+        new ("The Grapes of Wrath", "John Steinbeck"),
+        new ("Of Mice and Men", "John Steinbeck"),
+        new ("The Old Man and the Sea", "Ernest Hemingway"),
+        new ("For Whom the Bell Tolls", "Ernest Hemingway"),
+        new ("The Sun Also Rises", "Ernest Hemingway"),
+        new ("Fahrenheit 451", "Ray Bradbury"),
+        new ("The Handmaid's Tale", "Margaret Atwood"),
+        new ("Slaughterhouse-Five", "Kurt Vonnegut"),
+        new ("Catch-22", "Joseph Heller"),
+        new ("Lord of the Flies", "William Golding"),
+        new ("The Road", "Cormac McCarthy"),
+        new ("Beloved", "Toni Morrison"),
+        new ("The Color Purple", "Alice Walker"),
+        new ("Invisible Man", "Ralph Ellison"),
+        new ("The Bell Jar", "Sylvia Plath"),
+        new ("On the Road", "Jack Kerouac"),
+        new ("A Clockwork Orange", "Anthony Burgess"),
+        new ("The Shining", "Stephen King"),
+        new ("Dune", "Frank Herbert"),
+        new ("Foundation", "Isaac Asimov")
     ];
 
-public static IEnumerable<Member> InitialMembers { get; } =
-[
+    public static IEnumerable<Member> InitialMembers { get; } =
+    [
     // new (1, "James", "Smith"),
     // new (2, "Mary", "Johnson"),
     // new (3, "Robert", "Williams"),
@@ -80,11 +80,11 @@ public static IEnumerable<Member> InitialMembers { get; } =
     // new (18, "Karen", "Moore"),
     // new (19, "Christopher", "Jackson"),
     // new (20, "Nancy", "Martin")
-];
+    ];
 
     public static void Initialize(ILibrary library)
     {
-        // library.AddBooks(InitialBooks);
+        library.CreateBooks(InitialBooks);
         // foreach(Member member in InitialMembers)
         // {
         //     library.AddMember(member);   

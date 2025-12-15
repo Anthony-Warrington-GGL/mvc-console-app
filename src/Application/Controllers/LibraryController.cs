@@ -67,4 +67,20 @@ public class LibraryController
         return false;
         //return Library.ReturnBook(member.Id, book.Id);
     }
+
+    public IEnumerable<Book> SearchBooks (string searchTerm)
+    {
+        IEnumerable<Book> allBooks = Library.GetAllBooks();
+        HashSet<Book> foundBooks = [];
+
+        foreach(Book book in allBooks)
+        {
+            if (book.Author.ToLower().Contains(searchTerm.ToLower()) ||
+                book.Title.ToLower().Contains(searchTerm.ToLower()))
+            {
+                foundBooks.Add(book);
+            }
+        }
+        return foundBooks;
+    }
 }

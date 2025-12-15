@@ -46,7 +46,7 @@ public class MainMenuView
                     DisplayAllBooksFlow();
                     break;
                 case 2:
-                    SearchBooksFlow();
+                    NewSearchBooksFlow();
                     break;
                 case 3:
                     CheckoutBooksFlow();
@@ -223,5 +223,12 @@ public class MainMenuView
                 // PresentBooks($"Books with ID of {idSearchInt}: ", booksToPresent);
                 break;
         }
+    }
+
+    private void NewSearchBooksFlow()
+    {
+        SearchBooksView searchBooksView = new SearchBooksView(Controller, Ui);
+        IEnumerable<Book> books = searchBooksView.SearchBooks();
+        PresentBooks("Search Results", books);
     }
 }

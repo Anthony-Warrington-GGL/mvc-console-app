@@ -27,11 +27,11 @@ public class LibraryModel : ILibrary
         throw new InvalidOperationException("Couldn't add book to library.");
     }
 
-    public IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books)
+    public IEnumerable<Book> CreateBooks(IEnumerable<(string Title, string Author)> books)
     {
         var createdBooks = new List<Book>();
         
-        foreach (var (author, title) in books)
+        foreach (var (title, author) in books)
         {
             Book book = CreateBook(author, title);
             createdBooks.Add(book);

@@ -31,7 +31,7 @@ public interface ILibrary
     /// <param name="books">A list of tuples containing author and title information</param>
     /// <returns>An enumerable collection of created <see cref="Book"/> objects</returns>
     /// <exception cref="InvalidOperationException"> When a book can't be created</exception>
-    IEnumerable<Book> CreateBooks(List<(string Author, string Title)> books);
+    IEnumerable<Book> CreateBooks(IEnumerable<(string Title, string Author)> books);
 
     /// <summary>
     /// Creates a member using a first name and a last name
