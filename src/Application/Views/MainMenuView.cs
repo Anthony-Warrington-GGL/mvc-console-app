@@ -5,8 +5,8 @@
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app;
 using mvc_console_app.Controllers;
-using mvc_console_app.Interfaces;
 using mvc_console_app.Models;
+using MvcLibrary.UserInterface.Abstractions;
 
 // Controls User Interface flow 
 public class MainMenuView

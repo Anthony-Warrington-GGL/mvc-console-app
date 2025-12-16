@@ -1,6 +1,6 @@
-using mvc_console_app.Interfaces;
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
+using MvcLibrary.UserInterface.Abstractions;
 
 public class GetMemberView
 {

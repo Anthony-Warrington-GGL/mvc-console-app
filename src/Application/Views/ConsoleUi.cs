@@ -1,4 +1,4 @@
-using mvc_console_app.Interfaces;
+using MvcLibrary.UserInterface.Abstractions;
 
 namespace mvc_console_app.Views; 
 public class ConsoleUi : IUserInterface

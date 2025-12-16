@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+    <ProjectReference Include="..\UserInterface.Abstractions\UserInterface.Abstractions.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
