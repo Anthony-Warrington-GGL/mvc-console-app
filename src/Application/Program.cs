@@ -2,13 +2,14 @@
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
 using mvc_console_app.Views;
+using MvcLibrary.UserInterfaces.Abstractions;
 
 // new library
 var guidManager = new GuidManager();
 var library = new LibraryModel(guidManager);
 LibraryInitializer.Initialize(library);
 var controller = new LibraryController(library);
-var ui = new ConsoleUi();
+IUserInterface ui = new ConsoleUi();
 var mainView = new MainMenuView(controller, ui);
 
 mainView.Present();
