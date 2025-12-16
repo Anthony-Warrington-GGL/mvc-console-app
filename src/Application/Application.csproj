@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
     <ProjectReference Include="..\UserInterfaces.Abstractions\UserInterfaces.Abstractions.csproj" />
+    <ProjectReference Include="..\UserInterfaces.Console\UserInterfaces.Console.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
