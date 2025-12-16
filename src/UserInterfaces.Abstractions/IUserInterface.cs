@@ -1,4 +1,4 @@
-﻿namespace MvcLibrary.UserInterface.Abstractions;
+﻿namespace MvcLibrary.UserInterfaces.Abstractions;
 
 /// <summary>
 /// An interface to a user interface that provides methods for input and output operations

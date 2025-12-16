@@ -1,6 +1,6 @@
 using mvc_console_app;
 using mvc_console_app.Controllers;
-using MvcLibrary.UserInterface.Abstractions;
+using MvcLibrary.UserInterfaces.Abstractions;
 
 public class DisplayAllMembersView
 {

@@ -6,7 +6,7 @@
 using mvc_console_app;
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
-using MvcLibrary.UserInterface.Abstractions;
+using MvcLibrary.UserInterfaces.Abstractions;
 
 // Controls User Interface flow 
 public class MainMenuView
