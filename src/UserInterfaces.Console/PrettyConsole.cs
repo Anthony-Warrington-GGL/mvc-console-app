@@ -6,24 +6,56 @@ public class PrettyConsole : IUserInterface
 {
     private BorderMap BorderStyle { get; }
 
-    public PrettyConsole(BorderMap borderStyle)
+    public PrettyConsole(BorderMap? borderStyle = null)
     {
-        BorderStyle = borderStyle;
+        BorderStyle = borderStyle ?? BorderMaps.DoubleWithSingleInner;
     }
 
     public int GetIntInput(string prompt)
     {
-        throw new NotImplementedException();
+        // draw a box with the prompt and get int input, retrying until the input is valid
+        DrawBorderedBox("Input Required", new List<string> { prompt });
+        Console.Write("Please enter an integer: ");
+        while (true)
+        {
+            string input = Console.ReadLine() ?? string.Empty;
+            if (int.TryParse(input, out int result))
+            {
+                return result;
+            }
+            Console.Write("Invalid input. Please enter a valid integer: ");
+        }
     }
 
     public string GetStringInput(string prompt)
     {
-        throw new NotImplementedException();
+        DrawBorderedBox("Input Required", new List<string> { prompt });
+        Console.Write("Please enter your input: ");
+        return Console.ReadLine() ?? string.Empty;
     }
 
     public T PresentCustomItems<T>(string title, List<(string Description, T item)> items)
     {
-        throw new NotImplementedException();
+        int selectedIndex = 0;
+        while (true)
+        {
+            Console.Clear();
+            DrawBorderedBox(title, items.Select((item, index) =>
+                index == selectedIndex ? $"> {item.Description} <" : $"  {item.Description}  "));
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.UpArrow)
+            {
+                selectedIndex = (selectedIndex - 1 + items.Count) % items.Count;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                selectedIndex = (selectedIndex + 1) % items.Count;
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                return items[selectedIndex].item;
+            }
+        }
     }
 
     public void PresentItems(string title, IEnumerable<string> items)
@@ -33,17 +65,17 @@ public class PrettyConsole : IUserInterface
 
     public int PresentMenu(string title, List<string> options)
     {
-        DrawBorderedBox(title, options.Select((option, index) => $"{index + 1}. {option}"));
-
-        Console.Write("Please select an option by entering the corresponding number: ");
+        
         while (true)
         {
+            DrawTitledBoxWithInputArea(title, options.Select((opt, index) => $"{index + 1}. {opt}"), ">");
             string input = Console.ReadLine() ?? string.Empty;
-            if (int.TryParse(input, out int choice) && choice >= 1 && choice <= options.Count)
+            if (int.TryParse(input, out int selection) && selection >= 1 && selection <= options.Count)
             {
-                return choice;
+                return selection; // return one-based index
             }
-            Console.Write("Invalid input. Please enter a number between 1 and " + options.Count + ": ");
+            Console.Write("Invalid selection. Please any key to retry...");
+            Console.ReadKey(true);
         }
     }
 
@@ -56,6 +88,8 @@ public class PrettyConsole : IUserInterface
     {
         // Calculate the width of the box
         int contentWidth = Math.Max(title.Length, content.Max(line => line.Length));
+        // let's use the width of the console if it's less than the content width
+        contentWidth = Math.Min(contentWidth, Console.WindowWidth - 4);
         int boxWidth = contentWidth + 4; // Adding padding and borders
 
         // Draw top border
@@ -85,5 +119,53 @@ public class PrettyConsole : IUserInterface
         Console.Write(BorderStyle.BottomLeftCorner);
         Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
         Console.WriteLine(BorderStyle.BottomRightCorner);
+    }
+
+    private void DrawTitledBoxWithInputArea(string title, IEnumerable<string> items, string prompt)
+    {
+        // Calculate the width of the box
+        int contentWidth = Math.Max(title.Length, Math.Max(items.Max(line => line.Length), prompt.Length + 10));
+        int boxWidth = contentWidth + 4; // Adding padding and borders
+
+        // Draw top border
+        Console.Write(BorderStyle.TopLeftCorner);
+        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
+        Console.WriteLine(BorderStyle.TopRightCorner);
+
+        // Draw title
+        Console.Write(BorderStyle.VerticalEdge);
+        Console.Write(" " + title.PadRight(boxWidth - 4) + " ");
+        Console.WriteLine(BorderStyle.VerticalEdge);
+
+        // Draw separator
+        Console.Write(BorderStyle.LeftIntersection);
+        Console.Write(new string(BorderStyle.HorizontalInner, boxWidth - 2));
+        Console.WriteLine(BorderStyle.RightIntersection);
+
+        // Draw items
+        foreach (var line in items)
+        {
+            Console.Write(BorderStyle.VerticalEdge);
+            Console.Write(" " + line.PadRight(boxWidth - 4) + " ");
+            Console.WriteLine(BorderStyle.VerticalEdge);
+        }
+
+        // Draw separator before input area
+        Console.Write(BorderStyle.LeftIntersection);
+        Console.Write(new string(BorderStyle.HorizontalInner, boxWidth - 2));
+        Console.WriteLine(BorderStyle.RightIntersection);
+
+        // Draw input prompt area
+        Console.Write(BorderStyle.VerticalEdge);
+        Console.Write(" " + prompt.PadRight(boxWidth - 4) + " ");
+        Console.WriteLine(BorderStyle.VerticalEdge);
+
+        // Draw bottom border
+        Console.Write(BorderStyle.BottomLeftCorner);
+        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
+        Console.WriteLine(BorderStyle.BottomRightCorner);
+
+        // set cursor position for user input
+        Console.SetCursorPosition(3 + prompt.Length, Console.CursorTop - 2);
     }
 }
