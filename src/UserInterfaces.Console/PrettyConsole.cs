@@ -4,11 +4,11 @@ namespace UserInterfaces.ConsoleUI;
 
 public class PrettyConsole : IUserInterface
 {
-    private BorderMap BorderStyle { get; }
+    private BorderStyle BorderStyle { get; }
 
-    public PrettyConsole(BorderMap? borderStyle = null)
+    public PrettyConsole(BorderStyle? borderStyle = null)
     {
-        BorderStyle = borderStyle ?? BorderMaps.DoubleWithSingleInner;
+        BorderStyle = borderStyle ?? BorderStyles.DoubleWithSingleInner;
     }
 
     public int GetIntInput(string prompt)
