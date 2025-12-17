@@ -4,11 +4,11 @@ namespace UserInterfaces.ConsoleUI;
 
 public class PrettyConsole : IUserInterface
 {
-    private BorderMap BorderStyle { get; }
+    private BorderStyle BorderStyle { get; }
 
-    public PrettyConsole(BorderMap? borderStyle = null)
+    public PrettyConsole(BorderStyle? borderStyle = null)
     {
-        BorderStyle = borderStyle ?? BorderMaps.DoubleWithSingleInner;
+        BorderStyle = borderStyle ?? BorderStyles.DoubleWithSingleInner;
     }
 
     public int GetIntInput(string prompt)
@@ -93,32 +93,32 @@ public class PrettyConsole : IUserInterface
         int boxWidth = contentWidth + 4; // Adding padding and borders
 
         // Draw top border
-        Console.Write(BorderStyle.TopLeftCorner);
-        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
-        Console.WriteLine(BorderStyle.TopRightCorner);
+        Console.Write(BorderStyle.CornerTopLeft);
+        Console.Write(new string(BorderStyle.EdgeHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.CornerTopRight);
 
         // Draw title
-        Console.Write(BorderStyle.VerticalEdge);
+        Console.Write(BorderStyle.EdgeVertical);
         Console.Write(" " + title.PadRight(boxWidth - 4) + " ");
-        Console.WriteLine(BorderStyle.VerticalEdge);
+        Console.WriteLine(BorderStyle.EdgeVertical);
 
         // Draw separator
-        Console.Write(BorderStyle.LeftIntersection);
-        Console.Write(new string(BorderStyle.HorizontalInner, boxWidth - 2));
-        Console.WriteLine(BorderStyle.RightIntersection);
+        Console.Write(BorderStyle.IntersectionLeft);
+        Console.Write(new string(BorderStyle.InnerHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.IntersectionRight);
 
         // Draw content
         foreach (var line in content)
         {
-            Console.Write(BorderStyle.VerticalEdge);
+            Console.Write(BorderStyle.EdgeVertical);
             Console.Write(" " + line.PadRight(boxWidth - 4) + " ");
-            Console.WriteLine(BorderStyle.VerticalEdge);
+            Console.WriteLine(BorderStyle.EdgeVertical);
         }
 
         // Draw bottom border
-        Console.Write(BorderStyle.BottomLeftCorner);
-        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
-        Console.WriteLine(BorderStyle.BottomRightCorner);
+        Console.Write(BorderStyle.CornerBottomLeft);
+        Console.Write(new string(BorderStyle.EdgeHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.CornerBottomRight);
     }
 
     private void DrawTitledBoxWithInputArea(string title, IEnumerable<string> items, string prompt)
@@ -128,42 +128,42 @@ public class PrettyConsole : IUserInterface
         int boxWidth = contentWidth + 4; // Adding padding and borders
 
         // Draw top border
-        Console.Write(BorderStyle.TopLeftCorner);
-        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
-        Console.WriteLine(BorderStyle.TopRightCorner);
+        Console.Write(BorderStyle.CornerTopLeft);
+        Console.Write(new string(BorderStyle.EdgeHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.CornerTopRight);
 
         // Draw title
-        Console.Write(BorderStyle.VerticalEdge);
+        Console.Write(BorderStyle.EdgeVertical);
         Console.Write(" " + title.PadRight(boxWidth - 4) + " ");
-        Console.WriteLine(BorderStyle.VerticalEdge);
+        Console.WriteLine(BorderStyle.EdgeVertical);
 
         // Draw separator
-        Console.Write(BorderStyle.LeftIntersection);
-        Console.Write(new string(BorderStyle.HorizontalInner, boxWidth - 2));
-        Console.WriteLine(BorderStyle.RightIntersection);
+        Console.Write(BorderStyle.IntersectionLeft);
+        Console.Write(new string(BorderStyle.InnerHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.IntersectionRight);
 
         // Draw items
         foreach (var line in items)
         {
-            Console.Write(BorderStyle.VerticalEdge);
+            Console.Write(BorderStyle.EdgeVertical);
             Console.Write(" " + line.PadRight(boxWidth - 4) + " ");
-            Console.WriteLine(BorderStyle.VerticalEdge);
+            Console.WriteLine(BorderStyle.EdgeVertical);
         }
 
         // Draw separator before input area
-        Console.Write(BorderStyle.LeftIntersection);
-        Console.Write(new string(BorderStyle.HorizontalInner, boxWidth - 2));
-        Console.WriteLine(BorderStyle.RightIntersection);
+        Console.Write(BorderStyle.IntersectionLeft);
+        Console.Write(new string(BorderStyle.InnerHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.IntersectionRight);
 
         // Draw input prompt area
-        Console.Write(BorderStyle.VerticalEdge);
+        Console.Write(BorderStyle.EdgeVertical);
         Console.Write(" " + prompt.PadRight(boxWidth - 4) + " ");
-        Console.WriteLine(BorderStyle.VerticalEdge);
+        Console.WriteLine(BorderStyle.EdgeVertical);
 
         // Draw bottom border
-        Console.Write(BorderStyle.BottomLeftCorner);
-        Console.Write(new string(BorderStyle.HorizontalEdge, boxWidth - 2));
-        Console.WriteLine(BorderStyle.BottomRightCorner);
+        Console.Write(BorderStyle.CornerBottomLeft);
+        Console.Write(new string(BorderStyle.EdgeHorizontal, boxWidth - 2));
+        Console.WriteLine(BorderStyle.CornerBottomRight);
 
         // set cursor position for user input
         Console.SetCursorPosition(3 + prompt.Length, Console.CursorTop - 2);
