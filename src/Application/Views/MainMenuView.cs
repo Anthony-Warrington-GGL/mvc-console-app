@@ -46,7 +46,7 @@ public class MainMenuView
                     DisplayAllBooksFlow();
                     break;
                 case 2:
-                    NewSearchBooksFlow();
+                    SearchBooksFlow();
                     break;
                 case 3:
                     CheckoutBooksFlow();
@@ -74,11 +74,13 @@ public class MainMenuView
         addNewMemberView.Present();
     }
 
+    // TODO:
     private void CheckoutBooksFlow()
     {
+        // 
+
         // var member = PromptUserForMember();
 
-        // // TODO: 
         // var book = PromptUserForBook(Controller.GetAllBooks());
 
         // if (Controller.CheckoutBook(member, book))
@@ -86,7 +88,7 @@ public class MainMenuView
         //     Ui.PresentItems("Success", 
         //         [$"{member?.FirstName} {member?.LastName} has checked out \"{book?.Title}\" by {book?.Author}."]);            
         // }
-        // TODO: Else throw
+        throw new NotImplementedException();
     }
 
     private void DisplayAllBooksFlow()
@@ -151,12 +153,10 @@ public class MainMenuView
         return Ui.PresentCustomItems("Select a Member", items);
     }
 
-
     private int? PromptUserforMemberId()
     {
         return Ui.GetIntInput("Enter user ID: ");
     }
-
 
     private void ReturnBookFlow()
     {
@@ -195,37 +195,6 @@ public class MainMenuView
     }
 
     private void SearchBooksFlow()
-    {
-        List<string> options =
-        [
-            "Search by Author",
-            "Search by Title",
-            "Search by ID"
-        ];
-
-        int userChoice = Ui.PresentMenu("Search Type", options);
-
-        switch (userChoice)
-        {
-            case 1:
-                string authorSearchString = Ui.GetStringInput("Enter Author name: ");
-                IEnumerable<Book> authorSearchResults = Controller.GetBooksByAuthor(authorSearchString);
-                PresentBooks($"Books by {authorSearchString}", authorSearchResults);
-                break;
-            case 2:
-                string titleSearchString = Ui.GetStringInput("Enter Book Title: ");
-                IEnumerable<Book> titleSearchResults = Controller.GetBooksByTitle(titleSearchString);
-                PresentBooks($"Books titled \"{titleSearchString}\"", titleSearchResults);
-                break;
-            case 3:
-                // int idSearchInt = Ui.GetIntInput("Enter Book ID: ");
-                // List<Book?> booksToPresent = [Controller.GetBookById(idSearchInt)];
-                // PresentBooks($"Books with ID of {idSearchInt}: ", booksToPresent);
-                break;
-        }
-    }
-
-    private void NewSearchBooksFlow()
     {
         SearchBooksView searchBooksView = new SearchBooksView(Controller, Ui);
         IEnumerable<Book> books = searchBooksView.SearchBooks();

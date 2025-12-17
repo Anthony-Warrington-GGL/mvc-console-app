@@ -58,36 +58,33 @@ public static class LibraryInitializer
         new ("Foundation", "Isaac Asimov")
     ];
 
-    public static IEnumerable<Member> InitialMembers { get; } =
+    public static IEnumerable<(string firstName, string lastName)> InitialMembers { get; } =
     [
-    // new (1, "James", "Smith"),
-    // new (2, "Mary", "Johnson"),
-    // new (3, "Robert", "Williams"),
-    // new (4, "Patricia", "Brown"),
-    // new (5, "Michael", "Jones"),
-    // new (6, "Jennifer", "Garcia"),
-    // new (7, "William", "Miller"),
-    // new (8, "Linda", "Davis"),
-    // new (9, "David", "Rodriguez"),
-    // new (10, "Elizabeth", "Martinez"),
-    // new (11, "Richard", "Hernandez"),
-    // new (12, "Susan", "Lopez"),
-    // new (13, "Joseph", "Gonzalez"),
-    // new (14, "Jessica", "Wilson"),
-    // new (15, "Thomas", "Anderson"),
-    // new (16, "Sarah", "Thomas"),
-    // new (17, "Charles", "Taylor"),
-    // new (18, "Karen", "Moore"),
-    // new (19, "Christopher", "Jackson"),
-    // new (20, "Nancy", "Martin")
+        new ("James", "Smith"),
+        new ("Mary", "Johnson"),
+        new ("Robert", "Williams"),
+        new ("Patricia", "Brown"),
+        new ("Michael", "Jones"),
+        new ("Jennifer", "Garcia"),
+        new ("William", "Miller"),
+        new ("Linda", "Davis"),
+        new ("David", "Rodriguez"),
+        new ("Elizabeth", "Martinez"),
+        new ("Richard", "Hernandez"),
+        new ("Susan", "Lopez"),
+        new ("Joseph", "Gonzalez"),
+        new ("Jessica", "Wilson"),
+        new ("Thomas", "Anderson"),
+        new ("Sarah", "Thomas"),
+        new ("Charles", "Taylor"),
+        new ("Karen", "Moore"),
+        new ("Christopher", "Jackson"),
+        new ("Nancy", "Martin")
     ];
 
     public static void Initialize(ILibrary library)
     {
         library.CreateBooks(InitialBooks);
-        // foreach(Member member in InitialMembers)
-        // {
-        //     library.AddMember(member);   
-        // }        
+        library.CreateMembers(InitialMembers);     
     }
 }

@@ -40,6 +40,32 @@ public class LibraryModel : ILibrary
         return createdBooks;
     }
 
+    public Member CreateMember(string firstName, string lastName)
+    {
+        // get a int for the id - one that doesn't already exist
+        Member member = new Member(GuidManager.GetNewGuid(), firstName, lastName);
+        
+        if (LibraryMembers.Add(member))
+        {
+            return member;            
+        }
+        
+        throw new InvalidOperationException("Couldn't add member.");
+    }
+
+    public IEnumerable<Member> CreateMembers(IEnumerable<(string firstName, string lastName)> members)
+    {
+        var createdMembers = new List<Member>();
+
+        foreach (var (firstName, lastName) in members)
+        {
+            Member member = CreateMember(firstName, lastName);
+            createdMembers.Add(member);
+        }
+
+        return createdMembers;
+    }
+
     public IEnumerable<Book> GetAllBooks()
     {
         return Books;
@@ -98,19 +124,6 @@ public class LibraryModel : ILibrary
             }
         }
         return null;
-    }
-
-    public Member CreateMember(string firstName, string lastName)
-    {
-        // get a int for the id - one that doesn't already exist
-        Member member = new Member(GuidManager.GetNewGuid(), firstName, lastName);
-        
-        if (LibraryMembers.Add(member))
-        {
-            return member;            
-        }
-        
-        throw new InvalidOperationException("Couldn't add member.");
     }
 
     public void CheckoutBook(Guid memberGuid, Guid bookGuid)

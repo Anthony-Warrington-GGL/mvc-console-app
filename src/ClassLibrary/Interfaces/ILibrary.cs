@@ -43,6 +43,14 @@ public interface ILibrary
     Member CreateMember(string firstName, string lastName);
 
     /// <summary>
+    /// Creates multiple members from a list of firstname-lastname pairs
+    /// </summary>
+    /// <param name="members">A list of tuples containing firstname and lastname</param>
+    /// <returns>An enumerable collection of created <see cref="Member"/> objects</returns>
+    /// <exception cref="InvalidOperationException"> When a user can't be created</exception>
+    IEnumerable<Member> CreateMembers(IEnumerable<(string firstName, string lastName)> members);
+
+    /// <summary>
     /// Retrieves all books in the library's collection, including both available and checked-out books
     /// </summary>
     /// <returns>An enumerable collection of all <see cref="Book"/> objects in the library</returns>
