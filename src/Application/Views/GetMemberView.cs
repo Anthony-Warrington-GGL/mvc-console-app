@@ -15,6 +15,19 @@ public class GetMemberView
 
     public Member? GetMember()
     {
-        throw new NotImplementedException();
+        IEnumerable<Member> allMembers = Controller.GetAllMembers();
+
+        if (allMembers is not null)
+        {
+            List<(string, Member)> membersToDisplay = [];
+            foreach(Member member in allMembers)
+            {
+                membersToDisplay.Add((member.ToString(), member));
+            }           
+
+            return Ui.PresentCustomItems("All members", membersToDisplay);            
+        }
+        
+        return null; 
     }
 }

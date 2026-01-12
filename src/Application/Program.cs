@@ -14,3 +14,5 @@ IUserInterface ui = new ConsoleUi();
 var mainView = new MainMenuView(controller, ui);
 
 mainView.Present();
+
+// TODO: View for GetBook(singular) returning a singular book

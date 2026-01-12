@@ -74,21 +74,23 @@ public class MainMenuView
         addNewMemberView.Present();
     }
 
-    // TODO:
     private void CheckoutBooksFlow()
     {
-        // 
+        SearchBooksView searchBooksView = new SearchBooksView(Controller, Ui);
+        IEnumerable<Book> books = searchBooksView.SearchBooks();
 
-        // var member = PromptUserForMember();
+        SelectBookView selectBookView = new SelectBookView(Ui);
+        Book selectedBook = selectBookView.SelectBook(books);
 
-        // var book = PromptUserForBook(Controller.GetAllBooks());
+        GetMemberView getMemberView = new GetMemberView(Controller, Ui);
+        Member? selectedMember = getMemberView.GetMember();
 
-        // if (Controller.CheckoutBook(member, book))
-        // {
-        //     Ui.PresentItems("Success", 
-        //         [$"{member?.FirstName} {member?.LastName} has checked out \"{book?.Title}\" by {book?.Author}."]);            
-        // }
-        throw new NotImplementedException();
+        if (selectedMember is null)
+        {
+            throw new InvalidOperationException("No member is selected.");
+        }
+
+        Controller.CheckoutBook(selectedMember.Id, selectedBook.Id);
     }
 
     private void DisplayAllBooksFlow()
@@ -160,8 +162,10 @@ public class MainMenuView
 
     private void ReturnBookFlow()
     {
+        GetMemberView getMemberView = new GetMemberView(Controller, Ui);
+        
         // get user
-        var member = PromptUserForMember();
+        var member = getMemberView.GetMember();
 
         if (member is null)
         {
