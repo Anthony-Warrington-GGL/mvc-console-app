@@ -1,6 +1,6 @@
 using mvc_console_app.Interfaces;
 
-namespace mvc_console_app.Models;
+namespace mvc_console_app;
 
 public static class LibraryInitializer
 {

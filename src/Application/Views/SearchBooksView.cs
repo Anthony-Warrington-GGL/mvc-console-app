@@ -1,8 +1,8 @@
-
-using System.Dynamic;
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
 using MvcLibrary.UserInterfaces.Abstractions;
+
+namespace mvc_console_app.Views;
 
 /// <summary>
 /// Allows the user to select a number of books contained in a libary and then

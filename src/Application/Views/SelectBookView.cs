@@ -1,6 +1,8 @@
 using mvc_console_app.Models;
 using MvcLibrary.UserInterfaces.Abstractions;
 
+namespace mvc_console_app.Views;
+
 public class SelectBookView
 {
     private IUserInterface UserInterface {get;}

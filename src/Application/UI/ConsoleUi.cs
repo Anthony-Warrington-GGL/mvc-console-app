@@ -1,6 +1,6 @@
 using MvcLibrary.UserInterfaces.Abstractions;
 
-namespace mvc_console_app.Views;
+namespace mvc_console_app.UI;
 
 public class ConsoleUi : IUserInterface
 {

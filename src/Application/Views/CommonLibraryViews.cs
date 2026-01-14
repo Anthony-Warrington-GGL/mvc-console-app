@@ -58,7 +58,7 @@ public static class CommonLibraryViews
     {
         return new GetItemView<Book>
         (
-            itemFormatter: member => member.ToString(),
+            itemFormatter: book => book.ToString(),
             ui: ui
         );
     }
