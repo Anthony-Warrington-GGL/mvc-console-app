@@ -83,9 +83,9 @@ public class MainMenuView
         SelectBookView selectBookView = new SelectBookView(Ui);
         Book selectedBook = selectBookView.SelectBook(books);
 
-        var getMemberView = LibraryViews.GetMemberView(Controller, Ui);
+        var getMemberView = LibraryViews.GetMemberView(Ui);
 
-        Member? selectedMember = getMemberView.GetItem("Select a Member");
+        Member? selectedMember = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
 
         if (selectedMember is null)
         {
@@ -164,10 +164,10 @@ public class MainMenuView
 
     private void ReturnBookFlow()
     {
-        GetItemView<Member> getMemberView = LibraryViews.GetMemberViewWithDetails(Controller, Ui);
+        GetItemView<Member> getMemberView = LibraryViews.GetMemberViewWithDetails(Ui);
 
         // get user
-        var member = getMemberView.GetItem("Select a Member");
+        var member = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
 
         if (member is null)
         {

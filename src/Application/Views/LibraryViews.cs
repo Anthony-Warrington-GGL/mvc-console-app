@@ -15,11 +15,10 @@ public static class LibraryViews
     /// <param name="controller">the library controller to get members from</param>
     /// <param name="ui">the user interface to present the view with</param>
     /// <returns>a view configured to select a member</returns>
-    public static GetItemView<Member> GetMemberView(LibraryController controller, IUserInterface ui)
+    public static GetItemView<Member> GetMemberView(IUserInterface ui)
     {
         return new GetItemView<Member>
         (
-            getItemsFunc: controller.GetAllMembers,
             itemFormatter: member => $"{member}",
             ui: ui
         );
@@ -32,11 +31,10 @@ public static class LibraryViews
     /// <param name="controller"></param>
     /// <param name="ui"></param>
     /// <returns></returns>
-    public static GetItemView<Member> GetMemberViewWithDetails(LibraryController controller, IUserInterface ui)
+    public static GetItemView<Member> GetMemberViewWithDetails(IUserInterface ui)
     {
         return new GetItemView<Member>
         (
-            getItemsFunc: controller.GetAllMembers,
             itemFormatter: member =>
             {
                 var books = member.BorrowedBooks;
@@ -60,11 +58,10 @@ public static class LibraryViews
     /// <param name="controller">the library controller to get books from</param>
     /// <param name="ui">the user interface to present the view with</param>
     /// <returns>a view configured to select a book</returns>
-    public static GetItemView<Book> GetBookView(LibraryController controller, IUserInterface ui)
+    public static GetItemView<Book> GetBookView(IUserInterface ui)
     {
         return new GetItemView<Book>
         (
-            getItemsFunc: controller.GetAllBooks,
             itemFormatter: member => member.ToString(),
             ui: ui
         );

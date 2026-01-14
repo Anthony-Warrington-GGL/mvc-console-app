@@ -3,16 +3,11 @@ using MvcLibrary.UserInterfaces.Abstractions;
 namespace mvc_console_app.Views;
 
 /// <summary>
-/// A generic view that can retrieve a set of items and present them for selection
+/// A generic view that presents a list of items and allows the user to select one
 /// </summary>
-/// <typeparam name="T">the type of item to retrieve, present, and select</typeparam>
+/// <typeparam name="T">the type of item to present</typeparam>
 public class GetItemView<T> where T : class
 {
-    /// <summary>
-    /// The function that retrieves the items to present
-    /// </summary>
-    private Func<IEnumerable<T>> GetItemsFunc { get; }
-
     /// <summary>
     /// The function that formats an item for display
     /// </summary>
@@ -29,34 +24,31 @@ public class GetItemView<T> where T : class
     /// a function to format each item for display,
     /// and a user interface to present the items with.
     /// </summary>
-    /// <param name="getItemsFunc">the function that retrieves all items</param>
     /// <param name="itemFormatter">the function that formats an item for display</param>
     /// <param name="ui">the user interface to present the items with</param>
     /// <exception cref="ArgumentNullException">thrown if any argument is null</exception>
-    public GetItemView(Func<IEnumerable<T>> getItemsFunc, Func<T, string> itemFormatter, IUserInterface ui)
+    public GetItemView(Func<T, string> itemFormatter, IUserInterface ui)
     {
-        ArgumentNullException.ThrowIfNull(getItemsFunc);
         ArgumentNullException.ThrowIfNull(itemFormatter);
         ArgumentNullException.ThrowIfNull(ui);
 
-        GetItemsFunc = getItemsFunc;
         ItemFormatter = itemFormatter;
         UI = ui;
     }
 
     /// <summary>
-    /// Presents the items and allows the user to select one
+    /// Presents the provided items and allows the user to select one
     /// </summary>
-    /// <param name="title">an optional title for the selection menu</param>
+    /// <param name="title">the title for the selection menu</param>
+    /// <param name="items">the items to present</param>
     /// <returns>the selected item, or null if no items are available</returns>
-    public T? GetItem(string title = "Select an item")
+    public T? GetItem(string title, IEnumerable<T> items)
     {
-        var items = GetItemsFunc();
         if (items is null)
         {
             return null;
         }
-        var customItems = GetCustomItems(items);
+        var customItems = CreateCustomItems(items);
         return UI.PresentCustomItems(title, customItems);
     }
 
@@ -65,7 +57,7 @@ public class GetItemView<T> where T : class
     /// </summary>
     /// <param name="items">the items to create custom items for</param>
     /// <returns>the list of custom items tuples</returns>
-    private List<(string Description, T Item)> GetCustomItems(IEnumerable<T> items)
+    private List<(string Description, T Item)> CreateCustomItems(IEnumerable<T> items)
     {
         List<(string Description, T Item)> itemsTuples = [];
 
