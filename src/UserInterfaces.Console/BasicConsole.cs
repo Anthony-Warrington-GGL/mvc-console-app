@@ -73,4 +73,19 @@ public class BasicConsole : IUserInterface
             throw new FormatException("Invalid menu selection.");
         }
     }
+
+    public bool TryGetInt(string prompt, out int result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetString(string prompt, out string result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result)
+    {
+        throw new NotImplementedException();
+    }
 }

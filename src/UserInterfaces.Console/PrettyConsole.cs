@@ -168,4 +168,19 @@ public class PrettyConsole : IUserInterface
         // set cursor position for user input
         Console.SetCursorPosition(3 + prompt.Length, Console.CursorTop - 2);
     }
+
+    public bool TryGetInt(string prompt, out int result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetString(string prompt, out string result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -107,4 +107,19 @@ public class ConsoleUi : IUserInterface
         Console.WriteLine($"│{new string(' ', padding)}{title}{new string(' ', rightPadding)}│");
         Console.WriteLine($"└{new string('─', titleLength - 2)}┘");
     }
+
+    public bool TryGetInt(string prompt, out int result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetString(string prompt, out string result)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result)
+    {
+        throw new NotImplementedException();
+    }
 }

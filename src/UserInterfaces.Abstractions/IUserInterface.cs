@@ -42,4 +42,31 @@ public interface IUserInterface
     /// <param name="options">a list of menu option descriptions</param>
     /// <returns>the base-1 index of the option selected by the user</returns>
     int PresentMenu(string title, List<string> options);
+
+    /// <summary>
+    /// Tries to get an integer from the user
+    /// </summary>
+    /// <param name="prompt">a text prompt to guide the user</param>
+    /// <param name="result">when the method returns, contains the integer input from the user if the input was valid; otherwise, zero</param>
+    /// <returns>true if the user provided a valid integer; otherwise, false</returns>
+    bool TryGetInt(string prompt, out int result);
+
+    /// <summary>
+    /// Tries to get a string from the user
+    /// </summary>
+    /// <param name="prompt">a text prompt to guide the user</param>
+    /// <param name="result">when the method returns, contains the string input from the user if the input was valid; otherwise, null</param>
+    /// <returns>>true if the user provided a valid string; otherwise, false</returns>
+    bool TryGetString(string prompt, out string result);
+
+    /// <summary>
+    /// Tries to get an item from the user from a list of items
+    /// </summary>
+    /// <typeparam name="T">The type of the items to present</typeparam>
+    /// <param name="title">the title to display with the items</param>
+    /// <param name="items">a list of items to present</param>
+    /// <param name="formatter">a function that formats an item for display</param>
+    /// <param name="result">when the method returns, contains the item chosen by the user if the input was valid; otherwise, null</param>
+    /// <returns>>true if the user selected a valid item; otherwise, false</returns>
+    bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result);
 }
