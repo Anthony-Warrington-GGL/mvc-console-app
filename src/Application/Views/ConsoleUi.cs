@@ -1,6 +1,7 @@
 using MvcLibrary.UserInterfaces.Abstractions;
 
-namespace mvc_console_app.Views; 
+namespace mvc_console_app.Views;
+
 public class ConsoleUi : IUserInterface
 {
     public int PresentMenu(string title, List<string> options) // TODO: give a list of objects and return an object based on what is selected
@@ -57,7 +58,7 @@ public class ConsoleUi : IUserInterface
         Console.Clear();
         WriteCenteredTitled(title);
 
-        foreach(string item in items)
+        foreach (string item in items)
         {
             Console.WriteLine(item);
         }
@@ -67,33 +68,54 @@ public class ConsoleUi : IUserInterface
 
     public string GetString(string prompt)
     {
-        Console.Write(prompt);
-
-        string? input = Console.ReadLine();
-
-        if (input == null)
-        {
-            return string.Empty;
-        }
-        else
-        {
-            return input.Trim();
-        }
+        TryGetString(prompt, out string result);
+        return result;
     }
 
     public int GetInt(string prompt)
     {
+        int result;
+        while (!TryGetInt(prompt, out result)) { }
+        return result;
+    }
 
-        string? input = null;
-        int parsedInput;
-
-        while (!int.TryParse(input, out parsedInput))
+    /// <inheritdoc/>
+    public bool TryGetInt(string prompt, out int result)
+    {
+        Console.Write(prompt);
+        string? input = Console.ReadLine();
+        if (input == null || !int.TryParse(input, out result))
         {
-            Console.Write(prompt);
-            input = Console.ReadLine();
+            result = 0;
+            return false;
         }
+        else
+        {
+            return true;
+        }
+    }
 
-        return parsedInput;
+    /// <inheritdoc/>
+    public bool TryGetString(string prompt, out string result)
+    {
+        Console.Write(prompt);
+        string? input = Console.ReadLine();
+        if (input == null)
+        {
+            result = string.Empty;
+            return false;
+        }
+        else
+        {
+            result = input.Trim();
+            return true;
+        }
+    }
+
+    /// <inheritdoc/>
+    public bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result)
+    {
+        throw new NotImplementedException();
     }
 
     private void WriteCenteredTitled(string title)
@@ -102,24 +124,9 @@ public class ConsoleUi : IUserInterface
         var titleLength = 50;
         int padding = (titleLength - 2 - title.Length) / 2;
         int rightPadding = titleLength - 2 - title.Length - padding;
-        
+
         Console.WriteLine($"┌{new string('─', titleLength - 2)}┐");
         Console.WriteLine($"│{new string(' ', padding)}{title}{new string(' ', rightPadding)}│");
         Console.WriteLine($"└{new string('─', titleLength - 2)}┘");
-    }
-
-    public bool TryGetInt(string prompt, out int result)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool TryGetString(string prompt, out string result)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool TryGetItem<T>(string title, List<T> items, Func<T, string> formatter, out T result)
-    {
-        throw new NotImplementedException();
     }
 }
