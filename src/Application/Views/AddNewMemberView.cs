@@ -1,7 +1,4 @@
-using Microsoft.VisualBasic;
-using mvc_console_app;
 using mvc_console_app.Controllers;
-using mvc_console_app.Models;
 using MvcLibrary.UserInterfaces.Abstractions;
 
 public class AddNewMemberView

@@ -44,6 +44,10 @@ public class MainMenuView
             switch (userInput)
             {
                 case 1:
+                    // TODO: Implement DisplayItemsView, then refactor
+                    // DisplayAllBooksView to use DisplayItemsView to
+                    // present the books, instead of the PresentBooks()
+                    // method in this class
                     DisplayAllBooksFlow();
                     break;
                 case 2:
@@ -56,6 +60,10 @@ public class MainMenuView
                     ReturnBookFlow();
                     break;
                 case 5:
+                    // TODO: after implementing DisplayItemsView (see case 1),
+                    // refactor DisplayAllMembersFlow to use the generic
+                    // DisplayItemsView to present the members, instead of
+                    // using DisplayAllMembersView
                     DisplayAllMembersFlow();
                     break;
                 case 6:
@@ -83,7 +91,7 @@ public class MainMenuView
         SelectBookView selectBookView = new SelectBookView(Ui);
         Book selectedBook = selectBookView.SelectBook(books);
 
-        var getMemberView = LibraryViews.GetMemberView(Ui);
+        var getMemberView = CommonLibraryViews.GetMemberView(Ui);
 
         Member? selectedMember = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
 
@@ -164,7 +172,7 @@ public class MainMenuView
 
     private void ReturnBookFlow()
     {
-        GetItemView<Member> getMemberView = LibraryViews.GetMemberViewWithDetails(Ui);
+        GetItemView<Member> getMemberView = CommonLibraryViews.GetMemberViewWithDetails(Ui);
 
         // get user
         var member = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
