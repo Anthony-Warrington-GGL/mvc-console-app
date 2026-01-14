@@ -1,5 +1,5 @@
 using mvc_console_app.Models;
-using mvc_console_app.Views;
+using mvc_console_app.Views.Generic;
 using MvcLibrary.UserInterfaces.Abstractions;
 
 namespace mvc_console_app.UI;

@@ -5,6 +5,7 @@
 // how user conveys intent and how its conveyed to the controller
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
+using mvc_console_app.Views.Generic;
 using MvcLibrary.UserInterfaces.Abstractions;
 
 namespace mvc_console_app.Views; 

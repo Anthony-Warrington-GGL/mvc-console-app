@@ -1,4 +1,4 @@
-namespace mvc_console_app.Views;
+namespace mvc_console_app.Views.Generic;
 
 // TODO: implement this class
 //

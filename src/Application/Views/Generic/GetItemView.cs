@@ -1,6 +1,6 @@
 using MvcLibrary.UserInterfaces.Abstractions;
 
-namespace mvc_console_app.Views;
+namespace mvc_console_app.Views.Generic;
 
 /// <summary>
 /// A generic view that presents a list of items and allows the user to select one
