@@ -3,17 +3,18 @@
 // GetBooksView, AddNewMemberView
 
 // how user conveys intent and how its conveyed to the controller
-using mvc_console_app;
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
 using MvcLibrary.UserInterfaces.Abstractions;
 
+namespace mvc_console_app.Views; 
+
 // Controls User Interface flow 
 public class MainMenuView
 {
-    private LibraryController Controller {get;}
+    private LibraryController Controller { get; }
 
-    private IUserInterface Ui {get;}
+    private IUserInterface Ui { get; }
 
     public MainMenuView(LibraryController controller, IUserInterface ui)
     {
@@ -66,7 +67,7 @@ public class MainMenuView
                     break;
             }
         }
-    } 
+    }
 
     private void AddNewMemberFlow()
     {
@@ -82,12 +83,9 @@ public class MainMenuView
         SelectBookView selectBookView = new SelectBookView(Ui);
         Book selectedBook = selectBookView.SelectBook(books);
 
-        GetMemberView getMemberView = new GetMemberView(Controller, Ui, (m) =>
-        {
-            return m.ToString().ToUpper();
-        });
+        var getMemberView = LibraryViews.GetMemberView(Controller, Ui);
 
-        Member? selectedMember = getMemberView.GetMember();
+        Member? selectedMember = getMemberView.GetItem("Select a Member");
 
         if (selectedMember is null)
         {
@@ -130,7 +128,7 @@ public class MainMenuView
         Ui.PresentItems(presentationTitle, listToPreset);
     }
 
-    private Book? PromptUserForBook (IEnumerable<Book> books)
+    private Book? PromptUserForBook(IEnumerable<Book> books)
     {
         var items = new List<(string Description, Book Item)>();
         foreach (var book in books)
@@ -149,7 +147,7 @@ public class MainMenuView
     /// Prompts the user for a member
     /// </summary>
     /// <returns>The member that the user selected, if it exists; otherwise null</returns>
-    private Member? PromptUserForMember ()
+    private Member? PromptUserForMember()
     {
         var items = new List<(string Description, Member Item)>();
         foreach (var member in Controller.GetAllMembers())
@@ -166,10 +164,10 @@ public class MainMenuView
 
     private void ReturnBookFlow()
     {
-        GetMemberView getMemberView = new GetMemberView(Controller, Ui);
-        
+        GetItemView<Member> getMemberView = LibraryViews.GetMemberViewWithDetails(Controller, Ui);
+
         // get user
-        var member = getMemberView.GetMember();
+        var member = getMemberView.GetItem("Select a Member");
 
         if (member is null)
         {
@@ -180,7 +178,7 @@ public class MainMenuView
         // Check if member has any borrowed books
         if (!member.BorrowedBooks.Any())
         {
-            Ui.PresentItems("Notice", 
+            Ui.PresentItems("Notice",
                 [$"{member.FirstName} {member.LastName} has no books checked out."]);
             return;
         }
@@ -192,8 +190,8 @@ public class MainMenuView
         if (book is not null)
         {
             Controller.ReturnBook(member, book);
-            
-            Ui.PresentItems("Success", 
+
+            Ui.PresentItems("Success",
                 [$"{member.FirstName} {member.LastName} has returned \"{book.Title}\" by {book.Author}."]);
         }
         else
