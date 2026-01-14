@@ -82,7 +82,11 @@ public class MainMenuView
         SelectBookView selectBookView = new SelectBookView(Ui);
         Book selectedBook = selectBookView.SelectBook(books);
 
-        GetMemberView getMemberView = new GetMemberView(Controller, Ui);
+        GetMemberView getMemberView = new GetMemberView(Controller, Ui, (m) =>
+        {
+            return m.ToString().ToUpper();
+        });
+
         Member? selectedMember = getMemberView.GetMember();
 
         if (selectedMember is null)

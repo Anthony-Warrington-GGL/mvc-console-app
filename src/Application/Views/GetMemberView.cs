@@ -7,27 +7,41 @@ public class GetMemberView
     private LibraryController Controller {get;}
     private IUserInterface Ui {get;}
 
-    public GetMemberView (LibraryController controller, IUserInterface ui)
+    private Func<Member, string> MemberFormatter {get;}
+
+    public GetMemberView (LibraryController controller, IUserInterface ui, Func<Member, string>? memberFormatter = null)
     {
         Controller = controller;
         Ui = ui;
+        MemberFormatter = memberFormatter ?? GetMemberDescription;
     }
 
     public Member? GetMember()
     {
         IEnumerable<Member> allMembers = Controller.GetAllMembers();
 
-        if (allMembers is not null)
+        if (allMembers is null)
         {
-            List<(string, Member)> membersToDisplay = [];
-            foreach(Member member in allMembers)
-            {
-                membersToDisplay.Add((member.ToString(), member));
-            }           
+            return null;
+        }
 
-            return Ui.PresentCustomItems("All members", membersToDisplay);            
+        return Ui.PresentCustomItems("All members", GetMembersMenuItems(allMembers));
+    }
+
+    private string GetMemberDescription(Member member)
+    {
+        return member.ToString();
+    }
+
+    private List<(string Description, Member Member)> GetMembersMenuItems(IEnumerable<Member> members)
+    {
+        List<(string Description, Member Member)> membersTuples = [];
+        
+        foreach (var member in members)
+        {
+            membersTuples.Add((MemberFormatter(member), member));
         }
         
-        return null; 
+        return membersTuples;
     }
 }
