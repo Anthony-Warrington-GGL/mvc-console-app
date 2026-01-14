@@ -4,7 +4,7 @@ namespace UserInterfaces.ConsoleUI;
 
 public class BasicConsole : IUserInterface
 {
-    public int GetIntInput(string prompt)
+    public int GetInt(string prompt)
     {
         Console.WriteLine(prompt);
         string? input = Console.ReadLine();
@@ -18,14 +18,14 @@ public class BasicConsole : IUserInterface
         }
     }
 
-    public string GetStringInput(string prompt)
+    public string GetString(string prompt)
     {
         Console.WriteLine(prompt);
         string? input = Console.ReadLine();
         return input ?? string.Empty;
     }
 
-    public T PresentCustomItems<T>(string title, List<(string Description, T item)> items)
+    public T GetItem<T>(string title, List<(string Description, T item)> items)
     {
         Console.WriteLine(title);
         for (int i = 0; i < items.Count; i++)

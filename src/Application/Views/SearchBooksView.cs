@@ -22,7 +22,7 @@ public class SearchBooksView
 
     public IEnumerable<Book> SearchBooks ()
     {
-        string userInput = UserInterface.GetStringInput("Enter a search term: ");
+        string userInput = UserInterface.GetString("Enter a search term: ");
         IEnumerable<Book> books = Controller.SearchBooks(userInput);
         return books;
     }

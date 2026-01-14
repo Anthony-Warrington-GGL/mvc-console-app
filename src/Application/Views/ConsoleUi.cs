@@ -15,7 +15,7 @@ public class ConsoleUi : IUserInterface
 
         while (true)
         {
-            string userInput = GetStringInput("Enter your choice: ");
+            string userInput = GetString("Enter your choice: ");
             int choiceAsInt;
 
             if (int.TryParse(userInput, out choiceAsInt))
@@ -31,7 +31,7 @@ public class ConsoleUi : IUserInterface
     }
 
     // Presents items, asks the user to choose one of them, then returns that item
-    public T PresentCustomItems<T>(string title, List<(string Description, T item)> items)
+    public T GetItem<T>(string title, List<(string Description, T item)> items)
     {
         var itemDescriptions = new List<string>();
         foreach (var pair in items)
@@ -65,7 +65,7 @@ public class ConsoleUi : IUserInterface
         Console.ReadKey();
     }
 
-    public string GetStringInput(string prompt)
+    public string GetString(string prompt)
     {
         Console.Write(prompt);
 
@@ -81,7 +81,7 @@ public class ConsoleUi : IUserInterface
         }
     }
 
-    public int GetIntInput(string prompt)
+    public int GetInt(string prompt)
     {
 
         string? input = null;

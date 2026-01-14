@@ -6,27 +6,27 @@
 public interface IUserInterface
 {
     /// <summary>
-    /// Gets an integer input from the user
+    /// Gets an integer from the user
     /// </summary>
     /// <param name="prompt">a text prompt to guide the user</param>
     /// <returns>the integer input from the user</returns>
-    int GetIntInput(string prompt);
+    int GetInt(string prompt);
 
     /// <summary>
-    /// Gets a string input from the user
+    /// Gets a string from the user
     /// </summary>
     /// <param name="prompt">a text prompt to guide the user</param>
     /// <returns>the string input from the user</returns>
-    string GetStringInput(string prompt);
+    string GetString(string prompt);
 
     /// <summary>
-    /// Presents a set of items to the user, allows them to choose one, and returns the chosen item
+    /// Gets an item from the user from a list of items
     /// </summary>
     /// <typeparam name="T">The type of the items to present</typeparam>
     /// <param name="title">the title to display with the items</param>
     /// <param name="items">a list of tuples containing item descriptions and the items themselves</param>
     /// <returns>the item chosen by the user</returns>
-    T PresentCustomItems<T>(string title, List<(string Description, T item)> items);
+    T GetItem<T>(string title, List<(string Description, T item)> items);
 
     /// <summary>
     /// Presents a set of items to the user

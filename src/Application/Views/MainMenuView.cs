@@ -143,12 +143,12 @@ public class MainMenuView
         {
             items.Add((book.ToString(), book));
         }
-        return Ui.PresentCustomItems("Select a Book", items);
+        return Ui.GetItem("Select a Book", items);
     }
 
     private int? PromptUserForBookId()
     {
-        return Ui.GetIntInput("Enter book ID: ");
+        return Ui.GetInt("Enter book ID: ");
     }
 
     /// <summary>
@@ -162,12 +162,12 @@ public class MainMenuView
         {
             items.Add((member.ToString(), member));
         }
-        return Ui.PresentCustomItems("Select a Member", items);
+        return Ui.GetItem("Select a Member", items);
     }
 
     private int? PromptUserforMemberId()
     {
-        return Ui.GetIntInput("Enter user ID: ");
+        return Ui.GetInt("Enter user ID: ");
     }
 
     private void ReturnBookFlow()

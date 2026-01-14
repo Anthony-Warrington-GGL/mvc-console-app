@@ -11,7 +11,7 @@ public class PrettyConsole : IUserInterface
         BorderStyle = borderStyle ?? BorderStyles.DoubleWithSingleInner;
     }
 
-    public int GetIntInput(string prompt)
+    public int GetInt(string prompt)
     {
         // draw a box with the prompt and get int input, retrying until the input is valid
         DrawBorderedBox("Input Required", new List<string> { prompt });
@@ -27,14 +27,14 @@ public class PrettyConsole : IUserInterface
         }
     }
 
-    public string GetStringInput(string prompt)
+    public string GetString(string prompt)
     {
         DrawBorderedBox("Input Required", new List<string> { prompt });
         Console.Write("Please enter your input: ");
         return Console.ReadLine() ?? string.Empty;
     }
 
-    public T PresentCustomItems<T>(string title, List<(string Description, T item)> items)
+    public T GetItem<T>(string title, List<(string Description, T item)> items)
     {
         int selectedIndex = 0;
         while (true)

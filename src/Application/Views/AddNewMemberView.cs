@@ -14,8 +14,8 @@ public class AddNewMemberView
 
     public void Present()
     {
-        string firstName = Ui.GetStringInput("Enter member's first name: ");
-        string lastName = Ui.GetStringInput("Enter member's last name: ");
+        string firstName = Ui.GetString("Enter member's first name: ");
+        string lastName = Ui.GetString("Enter member's last name: ");
 
 //        if (member is not null)
 //        {

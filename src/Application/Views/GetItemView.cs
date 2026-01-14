@@ -49,7 +49,7 @@ public class GetItemView<T> where T : class
             return null;
         }
         var customItems = CreateCustomItems(items);
-        return UI.PresentCustomItems(title, customItems);
+        return UI.GetItem(title, customItems);
     }
 
     /// <summary>

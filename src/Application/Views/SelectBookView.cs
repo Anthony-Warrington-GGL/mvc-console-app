@@ -17,7 +17,7 @@ public class SelectBookView
             throw new ArgumentException("The list of books was empty.");
         }
 
-        return UserInterface.PresentCustomItems("Select a book: ", GetBooksMenuItems(books));
+        return UserInterface.GetItem("Select a book: ", GetBooksMenuItems(books));
     }
 
     private (string Description, Book Book) GetBookMenuItem (Book book)
