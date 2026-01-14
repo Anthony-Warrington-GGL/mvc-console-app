@@ -40,7 +40,7 @@ public static class LibraryViews
             itemFormatter: member =>
             {
                 var books = member.BorrowedBooks;
-                if (books.Any())
+                if (books.Count != 0)
                 {
                     var bookList = string.Join("\n", books.Select(b => $"    {b.Title}"));
                     return $"{member}\n  Checked out books:\n{bookList}";
