@@ -45,10 +45,6 @@ public class MainMenuView
             switch (userInput)
             {
                 case 1:
-                    // TODO: Implement DisplayItemsView, then refactor
-                    // DisplayAllBooksView to use DisplayItemsView to
-                    // present the books, instead of the PresentBooks()
-                    // method in this class
                     DisplayAllBooksFlow();
                     break;
                 case 2:
@@ -61,10 +57,6 @@ public class MainMenuView
                     ReturnBookFlow();
                     break;
                 case 5:
-                    // TODO: after implementing DisplayItemsView (see case 1),
-                    // refactor DisplayAllMembersFlow to use the generic
-                    // DisplayItemsView to present the members, instead of
-                    // using DisplayAllMembersView
                     DisplayAllMembersFlow();
                     break;
                 case 6:
@@ -86,21 +78,16 @@ public class MainMenuView
 
     private void CheckoutBooksFlow()
     {
-        SearchBooksView searchBooksView = new SearchBooksView(Controller, Ui);
+        var searchBooksView = new SearchBooksView(Controller, Ui);
         IEnumerable<Book> books = searchBooksView.SearchBooks();
 
-        SelectBookView selectBookView = new SelectBookView(Ui);
-        Book selectedBook = selectBookView.SelectBook(books);
+        var selectBookView = CommonLibraryViews.GetBookView(Ui);
 
+        var selectedBook = selectBookView.GetItem("Select a Book", books) ?? throw new InvalidOperationException("No book is selected.");
         var getMemberView = CommonLibraryViews.GetMemberView(Ui);
 
-        Member? selectedMember = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
-
-        if (selectedMember is null)
-        {
-            throw new InvalidOperationException("No member is selected.");
-        }
-
+        Member? selectedMember = getMemberView.GetItem("Select a Member", Controller.GetAllMembers()) ?? throw new InvalidOperationException("No member is selected.");
+        
         Controller.CheckoutBook(selectedMember.Id, selectedBook.Id);
     }
 
@@ -109,66 +96,16 @@ public class MainMenuView
         // get list of all the books
         var books = Controller.GetAllBooks();
 
-        PresentBooks("All Books", books);
+        var displayItemsView = CommonLibraryViews.DisplayBooksView(Ui);
+        
+        displayItemsView.PresentItems("All Books", books);        
     }
 
     private void DisplayAllMembersFlow()
     {
-        DisplayAllMembersView displayAllMembersView = new DisplayAllMembersView(Controller, Ui);
-        displayAllMembersView.Present();
-    }
+        var view = CommonLibraryViews.DisplayMembersView(Ui);
 
-    private void PresentBooks(string presentationTitle, IEnumerable<Book?> books)
-    {
-        var booksAsStrings = new List<string>();
-        foreach (var book in books)
-        {
-            if (book != null)
-            {
-                booksAsStrings.Add($"{book}");
-            }
-        }
-
-        // call present all items
-        var listToPreset = booksAsStrings.Count == 0
-            ? ["No books found"]
-            : booksAsStrings;
-
-        Ui.PresentItems(presentationTitle, listToPreset);
-    }
-
-    private Book? PromptUserForBook(IEnumerable<Book> books)
-    {
-        var items = new List<(string Description, Book Item)>();
-        foreach (var book in books)
-        {
-            items.Add((book.ToString(), book));
-        }
-        return Ui.GetItem("Select a Book", items);
-    }
-
-    private int? PromptUserForBookId()
-    {
-        return Ui.GetInt("Enter book ID: ");
-    }
-
-    /// <summary>
-    /// Prompts the user for a member
-    /// </summary>
-    /// <returns>The member that the user selected, if it exists; otherwise null</returns>
-    private Member? PromptUserForMember()
-    {
-        var items = new List<(string Description, Member Item)>();
-        foreach (var member in Controller.GetAllMembers())
-        {
-            items.Add((member.ToString(), member));
-        }
-        return Ui.GetItem("Select a Member", items);
-    }
-
-    private int? PromptUserforMemberId()
-    {
-        return Ui.GetInt("Enter user ID: ");
+        view.PresentItems("All Members", Controller.GetAllMembers());
     }
 
     private void ReturnBookFlow()
@@ -193,7 +130,8 @@ public class MainMenuView
         }
 
         // get the members list of checked-out books
-        var book = PromptUserForBook(member.BorrowedBooks);
+        var getBookView = CommonLibraryViews.GetBookView(Ui);
+        var book = getBookView.GetItem("Choose a book to return", member.BorrowedBooks);
 
         // call the Library to return the book
         if (book is not null)
@@ -213,6 +151,7 @@ public class MainMenuView
     {
         SearchBooksView searchBooksView = new SearchBooksView(Controller, Ui);
         IEnumerable<Book> books = searchBooksView.SearchBooks();
-        PresentBooks("Search Results", books);
+        var displayBooksView = CommonLibraryViews.DisplayBooksView(Ui);
+        displayBooksView.PresentItems("Search Results", books);
     }
 }
