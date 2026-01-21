@@ -17,25 +17,17 @@ public class AddNewMemberView
     public void Present()
     {
         string firstName = Ui.GetString("Enter member's first name: ");
-        string lastName = Ui.GetString("Enter member's last name: ");
+        string lastName = Ui.GetString("Enter member's last name: ");       
 
-//        if (member is not null)
-//        {
-//            Ui.PresentItems("Success", 
-//                [$"Member {member.FirstName} {member.LastName} (ID: {member.Id}) has been added to the library."]);            
-//        }
-//        else
-//        {
-//            throw new InvalidOperationException("Couldn't add member.");
-//        }
-
-        try
-        {            
-            Controller.CreateMember(firstName, lastName);
-        }
-        catch
-        {
-            
-        }
+       try
+       {
+            var member = Controller.CreateMember(firstName, lastName);
+            Ui.PresentItems("Success", 
+               [$"Member {member.FirstName} {member.LastName} (ID: {member.Id}) has been added to the library."]);            
+       }
+       catch
+       {
+           throw new InvalidOperationException("Couldn't add member.");
+       }
     }
 }

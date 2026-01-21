@@ -14,6 +14,4 @@ var controller = new LibraryController(library);
 IUserInterface ui = new ConsoleUi();
 var mainView = new MainMenuView(controller, ui);
 
-mainView.Present();
-
-// TODO: View for GetBook(singular) returning a singular book
+mainView.PresentNew();

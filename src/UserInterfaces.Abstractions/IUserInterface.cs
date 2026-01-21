@@ -41,7 +41,13 @@ public interface IUserInterface
     /// <param name="title">the title to display with the menu</param>
     /// <param name="options">a list of menu option descriptions</param>
     /// <returns>the base-1 index of the option selected by the user</returns>
-    int PresentMenu(string title, List<string> options);
+    int GetSelectedIndexFromUser(string title, List<string> options);
+
+    /// <summary>
+    /// Presents a custom menu to the user and performs actions based on what they selected.
+    /// Continues to prompt the user for their choice until they choose to exit
+    /// </summary> 
+    void PresentMenu(string title, List<(string Description, Action Action)> menuItems);
 
     /// <summary>
     /// Tries to get an integer from the user

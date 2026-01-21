@@ -63,7 +63,7 @@ public class PrettyConsole : IUserInterface
         DrawBorderedBox(title, items);
     }
 
-    public int PresentMenu(string title, List<string> options)
+    public int GetSelectedIndexFromUser(string title, List<string> options)
     {
         
         while (true)

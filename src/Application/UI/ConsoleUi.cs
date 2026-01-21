@@ -4,7 +4,9 @@ namespace mvc_console_app.UI;
 
 public class ConsoleUi : IUserInterface
 {
-    public int PresentMenu(string title, List<string> options) // TODO: give a list of objects and return an object based on what is selected
+    // TODO: Implement new interface method
+
+    public int GetSelectedIndexFromUser(string title, List<string> options) // TODO: give a list of objects and return an object based on what is selected
     {
         WriteCenteredTitled(title);
 
@@ -40,7 +42,7 @@ public class ConsoleUi : IUserInterface
             itemDescriptions.Add(pair.Description);
         }
 
-        var choice = PresentMenu(title, itemDescriptions);
+        var choice = GetSelectedIndexFromUser(title, itemDescriptions);
 
         var index = choice - 1;
 

@@ -54,7 +54,7 @@ public class BasicConsole : IUserInterface
         }
     }
 
-    public int PresentMenu(string title, List<string> options)
+    public int GetSelectedIndexFromUser(string title, List<string> options)
     {
         Console.WriteLine(title);
         for (int i = 0; i < options.Count; i++)

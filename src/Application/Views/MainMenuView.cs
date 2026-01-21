@@ -23,6 +23,29 @@ public class MainMenuView
         Ui = ui;
     }
 
+    // TODO: fix after implementing new interface so that the Ui is responsible for looping through the main menu
+    public void PresentNew()
+    {
+        Func<DescribedAction, string> itemFormatter = act => act.Description;
+
+        // present items to user and have user pick one
+        var getItemView = new GetItemView<DescribedAction>(itemFormatter, Ui);
+
+        List<DescribedAction> actions = 
+        [
+            new DescribedAction{Description = "View All Books", Action = DisplayAllBooksFlow},
+            new DescribedAction{Description = "Search Books", Action = SearchBooksFlow},
+            new DescribedAction{Description = "Checkout Book", Action = CheckoutBooksFlow},
+            new DescribedAction{Description = "Return Book", Action = ReturnBookFlow},
+            new DescribedAction{Description = "Display All Members", Action = DisplayAllMembersFlow},
+            new DescribedAction{Description = "Add New Member", Action = AddNewMemberFlow}
+        ];
+
+        var selectedAction = getItemView.GetItem("Library Management System", actions);
+        
+        selectedAction?.Action.Invoke();
+    }
+
     // Present() tells view to do something
     public void Present()
     {
@@ -40,7 +63,7 @@ public class MainMenuView
 
         while (userInput != options.Count)
         {
-            userInput = Ui.PresentMenu("Library Management System", options);
+            userInput = Ui.GetSelectedIndexFromUser("Library Management System", options);
 
             switch (userInput)
             {
