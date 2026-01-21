@@ -136,7 +136,7 @@ public class MainMenuView
         // call the Library to return the book
         if (book is not null)
         {
-            Controller.ReturnBook(member, book);
+            Controller.ReturnBook(member.Id, book.Id);
 
             Ui.PresentItems("Success",
                 [$"{member.FirstName} {member.LastName} has returned \"{book.Title}\" by {book.Author}."]);

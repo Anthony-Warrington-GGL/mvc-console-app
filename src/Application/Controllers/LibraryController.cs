@@ -58,15 +58,23 @@ public class LibraryController
 
     public IEnumerable<Book> GetBooksByTitle(string title) => Library.GetBooksByTitle(title);
 
-    public bool ReturnBook(Member? member, Book? book)
-    {        
-        if (member is null || book is null)
+    public bool ReturnBook(Guid member, Guid book)
+    {
+        try
+        {
+            Library.ReturnBook(member, book);
+            return true;
+        }
+        
+        catch(ArgumentException)
         {
             return false;
-        }    
-        return false;
-        // TODO: fix
-        //return Library.ReturnBook(member.Id, book.Id);
+        }
+
+        catch(InvalidOperationException)
+        {
+            return false;
+        }
     }
 
     public IEnumerable<Book> SearchBooks (string searchTerm)

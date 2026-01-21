@@ -67,5 +67,4 @@ public class GetItemView<T> where T : class
         }
         return itemsTuples;
     }
-
 }

@@ -2,10 +2,6 @@ using MvcLibrary.UserInterfaces.Abstractions;
 
 namespace mvc_console_app.Views.Generic;
 
-// TODO: implement this class
-//
-// You may refer to GetItemView.cs for guidance
-
 /// <summary>
 /// A generic view that presents a list of items
 /// </summary>
