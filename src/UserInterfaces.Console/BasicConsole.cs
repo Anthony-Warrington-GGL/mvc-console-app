@@ -88,4 +88,9 @@ public class BasicConsole : IUserInterface
     {
         throw new NotImplementedException();
     }
+
+    public void PresentMenu(string title, List<(string Description, Action Action)> menuItems)
+    {
+        throw new NotImplementedException();
+    }
 }

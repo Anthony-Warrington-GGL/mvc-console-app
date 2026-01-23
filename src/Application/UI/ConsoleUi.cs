@@ -4,9 +4,33 @@ namespace mvc_console_app.UI;
 
 public class ConsoleUi : IUserInterface
 {
-    // TODO: Implement new interface method
+    public void PresentMenu(string title, List<(string Description, Action Action)> menuItems)
+    {
+        while (true)
+        {
+            WriteCenteredTitled(title);
 
-    public int GetSelectedIndexFromUser(string title, List<string> options) // TODO: give a list of objects and return an object based on what is selected
+            // present menu with options
+            for (int i = 0; i < menuItems.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {menuItems[i].Description}");
+            }
+
+            string userInput = GetString("Enter your choice: ");
+            int choiceAsInt;
+
+            if (int.TryParse(userInput, out choiceAsInt))
+            {
+                menuItems[choiceAsInt-1].Action.Invoke();
+            }
+            else
+            {
+                Console.WriteLine($"Invalid input. Please enter a number between 1 and {menuItems.Count}.");
+            }            
+        }
+    }
+
+    public int GetSelectedIndexFromUser(string title, List<string> options)
     {
         WriteCenteredTitled(title);
 

@@ -14,4 +14,4 @@ var controller = new LibraryController(library);
 IUserInterface ui = new ConsoleUi();
 var mainView = new MainMenuView(controller, ui);
 
-mainView.PresentNew();
+mainView.Present();

@@ -3,6 +3,7 @@
 // GetBooksView, AddNewMemberView
 
 // how user conveys intent and how its conveyed to the controller
+using System.ComponentModel;
 using mvc_console_app.Controllers;
 using mvc_console_app.Models;
 using mvc_console_app.Views.Generic;
@@ -24,73 +25,19 @@ public class MainMenuView
     }
 
     // TODO: fix after implementing new interface so that the Ui is responsible for looping through the main menu
-    public void PresentNew()
-    {
-        Func<DescribedAction, string> itemFormatter = act => act.Description;
-
-        // present items to user and have user pick one
-        var getItemView = new GetItemView<DescribedAction>(itemFormatter, Ui);
-
-        List<DescribedAction> actions = 
-        [
-            new DescribedAction{Description = "View All Books", Action = DisplayAllBooksFlow},
-            new DescribedAction{Description = "Search Books", Action = SearchBooksFlow},
-            new DescribedAction{Description = "Checkout Book", Action = CheckoutBooksFlow},
-            new DescribedAction{Description = "Return Book", Action = ReturnBookFlow},
-            new DescribedAction{Description = "Display All Members", Action = DisplayAllMembersFlow},
-            new DescribedAction{Description = "Add New Member", Action = AddNewMemberFlow}
-        ];
-
-        var selectedAction = getItemView.GetItem("Library Management System", actions);
-        
-        selectedAction?.Action.Invoke();
-    }
-
-    // Present() tells view to do something
     public void Present()
     {
-        int userInput = -1;
-
-        List<string> options = [
-            "View All Books",
-            "Search Books",
-            "Checkout Books",
-            "Return Book",
-            "Display All Members",
-            "Add New Member",
-            "Exit"
+        List<(string Description, Action action)> menuItems =
+        [
+            ("Display All Books", DisplayAllBooksFlow),
+            ("Search Books", SearchBooksFlow),
+            ("Checkout Book", CheckoutBooksFlow),
+            ("Return Book",  ReturnBookFlow),
+            ("Display All Members", DisplayAllMembersFlow),
+            ("Add New Member", AddNewMemberFlow)
         ];
 
-        while (userInput != options.Count)
-        {
-            userInput = Ui.GetSelectedIndexFromUser("Library Management System", options);
-
-            switch (userInput)
-            {
-                case 1:
-                    DisplayAllBooksFlow();
-                    break;
-                case 2:
-                    SearchBooksFlow();
-                    break;
-                case 3:
-                    CheckoutBooksFlow();
-                    break;
-                case 4:
-                    ReturnBookFlow();
-                    break;
-                case 5:
-                    DisplayAllMembersFlow();
-                    break;
-                case 6:
-                    AddNewMemberFlow();
-                    break;
-                case 7:
-                    return; // exit program
-                default:
-                    break;
-            }
-        }
+        Ui.PresentMenu("Library Management System", menuItems);
     }
 
     private void AddNewMemberFlow()
