@@ -24,7 +24,6 @@ public class MainMenuView
         Ui = ui;
     }
 
-    // TODO: fix after implementing new interface so that the Ui is responsible for looping through the main menu
     public void Present()
     {
         List<(string Description, Action action)> menuItems =
