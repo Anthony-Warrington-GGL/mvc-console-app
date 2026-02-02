@@ -33,10 +33,24 @@ public class MainMenuView
             ("Checkout Book", CheckoutBooksFlow),
             ("Return Book",  ReturnBookFlow),
             ("Display All Members", DisplayAllMembersFlow),
-            ("Add New Member", AddNewMemberFlow)
+            ("Add New Member", AddNewMemberFlow),
+            ("Show sub-menu", PresentSubMenu)
         ];
 
         Ui.PresentMenu("Library Management System", menuItems);
+    }
+
+    private void PresentSubMenu()
+    {
+        List<(string Description, Action action)> menuItems =
+        [
+          ("Item 1", () => {}),  
+          ("Item 2", () => {}),
+          ("Item 3", () => {}),
+          ("Item 4", () => {})
+        ];
+
+        Ui.PresentMenu("SubMenu", menuItems);
     }
 
     private void AddNewMemberFlow()

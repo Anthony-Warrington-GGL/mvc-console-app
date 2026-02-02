@@ -4,14 +4,12 @@ namespace mvc_console_app.UI;
 
 public class ConsoleUi : IUserInterface
 {
-    // TODO: Are there mixed concerns which can be extracted? Is it singular in its purpose?
     public void PresentMenu(string title, List<(string Description, Action Action)> menuItems)
     {
-        bool running = true;
-        while (running)
+        bool shouldExit = false;
+        while (!shouldExit)
         {
             WriteCenteredTitled(title);
-            //menuItems.Add(("Exit", Environment.Exit(0))); // Could potentially avoid a bunch of logic below by just adding the exit-menu-item here?
 
             // present menu with options
             for (int i = 0; i < menuItems.Count; i++)
@@ -31,14 +29,9 @@ public class ConsoleUi : IUserInterface
                 menuItems[choiceAsInt - 1].Action.Invoke();
             }
             // App exit choice
-            // TODO: Is this the concern of ConsoleUi?
-            // Yes - other UIs might have different ways of exiting out of the application, this concern seems tied to consoleui
             else if (choiceAsInt == menuItems.Count + 1)
             {
-                // But is this coupling-up the presenting of a menu with the concept of exiting the application?
-                // In doing this, has the method now become less flexible?
-                // Is this now doing more than the Interface it implements says the method should do?
-                Environment.Exit(0);
+                shouldExit = true;
             }
             // Invalid input
             else
@@ -46,6 +39,7 @@ public class ConsoleUi : IUserInterface
                 Console.WriteLine($"Invalid input. Please enter a number between 1 and {menuItems.Count() + 1}.\nPress any key to continue.");
                 Console.ReadKey();
             }
+            // 
         }
     }
 
