@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using mvc_console_app.Models;
 
-namespace mvc_console_app.Models;
+namespace mvc_console_app;
 
 public class LibraryContext : DbContext
 {

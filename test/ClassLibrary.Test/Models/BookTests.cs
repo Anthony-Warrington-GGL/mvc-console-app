@@ -52,7 +52,7 @@ public sealed class BookTests
 
         // Assert
         Assert.IsNotNull(book);
-        Assert.AreEqual(Guid.Empty, book.Id);
+        Assert.AreEqual(Guid.Empty, book.BookId);
     }
 
     [TestMethod]
@@ -99,7 +99,7 @@ public sealed class BookTests
         var book = new Book(expectedId, expectedTitle, expectedAuthor);
 
         // Assert
-        Assert.AreEqual(expectedId, book.Id);
+        Assert.AreEqual(expectedId, book.BookId);
         Assert.AreEqual(expectedTitle, book.Title);
         Assert.AreEqual(expectedAuthor, book.Author);
         Assert.IsNull(book.CheckedOutDate);

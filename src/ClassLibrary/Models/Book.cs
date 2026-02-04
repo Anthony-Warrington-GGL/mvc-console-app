@@ -2,12 +2,17 @@ namespace mvc_console_app.Models;
 
 public class Book
 {
-    public Guid Id;
-    public string Author;
-    public string Title;
+    public Guid BookId {get; set;}
+    public string Author {get; set;}
+    public string Title {get; set;}
     
     // Nullable because a book is null when its created
     public DateTime? CheckedOutDate { get; set; }
+
+    public Book()
+    {
+        
+    }
 
     public Book(Guid id, string title, string author)
     {
@@ -16,7 +21,7 @@ public class Book
             throw new ArgumentNullException();
         }
 
-        this.Id = id;
+        this.BookId = id;
         this.Title = title;
         this.Author = author;
         // Assuming the book is available when created...

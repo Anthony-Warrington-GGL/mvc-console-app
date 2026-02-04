@@ -7,6 +7,8 @@ public class Member
     public string LastName { get; set; }
     public ICollection<Book> BorrowedBooks { get; private set; } = new HashSet<Book>();
 
+    public Member(){}
+
     public Member(Guid id, string firstName, string lastName)
     {
         this.Id = id;

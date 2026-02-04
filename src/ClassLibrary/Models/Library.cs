@@ -75,7 +75,7 @@ public class LibraryModel : ILibrary
     {
         foreach (Book b in Books)
         {
-            if (b.Id == id)
+            if (b.BookId == id)
             {
                 return b;
             }
@@ -183,7 +183,7 @@ public class LibraryModel : ILibrary
     {
         foreach (Book book in books)
         {
-            if (book.Id == bookId)
+            if (book.BookId == bookId)
             {
                 return book;
             }
