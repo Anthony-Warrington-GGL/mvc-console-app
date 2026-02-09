@@ -71,7 +71,7 @@ public class MainMenuView
 
         Member? selectedMember = getMemberView.GetItem("Select a Member", Controller.GetAllMembers()) ?? throw new InvalidOperationException("No member is selected.");
         
-        Controller.CheckoutBook(selectedMember.Id, selectedBook.BookId);
+        Controller.CheckoutBook(selectedMember.Id, selectedBook.Id);
     }
 
     private void DisplayAllBooksFlow()
@@ -119,7 +119,7 @@ public class MainMenuView
         // call the Library to return the book
         if (book is not null)
         {
-            Controller.ReturnBook(member.Id, book.BookId);
+            Controller.ReturnBook(member.Id, book.Id);
 
             Ui.PresentItems("Success",
                 [$"{member.FirstName} {member.LastName} has returned \"{book.Title}\" by {book.Author}."]);

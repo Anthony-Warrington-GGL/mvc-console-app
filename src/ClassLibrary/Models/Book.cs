@@ -2,7 +2,7 @@ namespace mvc_console_app.Models;
 
 public class Book
 {
-    public Guid BookId {get; set;}
+    public Guid Id {get; set;}
     public string Author {get; set;}
     public string Title {get; set;}
     
@@ -21,7 +21,7 @@ public class Book
             throw new ArgumentNullException();
         }
 
-        this.BookId = id;
+        this.Id = id;
         this.Title = title;
         this.Author = author;
         // Assuming the book is available when created...

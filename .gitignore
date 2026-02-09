@@ -56,3 +56,6 @@
 **/.vs
 **/.vscode
 **/packages
+src/Application/Migrations/20260204002044_InitialCreate.cs
+src/Application/Migrations/20260204002044_InitialCreate.Designer.cs
+src/Application/Migrations/LibraryContextModelSnapshot.cs
