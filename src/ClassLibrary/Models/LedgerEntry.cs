@@ -11,7 +11,7 @@ public class LedgerEntry
     /// <summary>
     /// Unique identifier for this ledger entry
     /// </summary>
-    public Guid Id {get; init;}
+    public Guid Id {get; init;} = Guid.NewGuid();
 
     /// <summary>
     /// The unique identifier of the <see cref="Book"/> associated with this loan
@@ -21,7 +21,7 @@ public class LedgerEntry
     /// <summary>
     /// The unique identifier of the <see cref="Member"/> who checked out the book
     /// </summary>
-    public Guid LoaningMemberId {get; set;} 
+    public Guid BorrowingMemberId {get; set;}
 
     /// <summary>
     /// The date and time at which the book was checked out
@@ -29,7 +29,7 @@ public class LedgerEntry
     public DateTime CheckedOutDate {get; set;}
 
     /// <summary>
-    /// The date and time by which the book must be returned, calculated as 14 days from <see cref="CheckedOutDate"/>
+    /// The date and time by which the book must be returned
     /// </summary>
     public DateTime DueDate {get; set;}
 
@@ -37,28 +37,4 @@ public class LedgerEntry
     /// The date and time at which the book was returned, or null if the loan is still active
     /// </summary>
     public DateTime? ReturnedDate {get; set;}
-
-    /// <summary>
-    /// Whether this loan is currently active, i.e. the book has not yet been returned
-    /// </summary>    
-    public bool IsActive => ReturnedDate == null;
-
-    public LedgerEntry() { }
-
-    /// <summary>
-    /// Creates a new active ledger entry for a book being checked out by a member.
-    /// Sets <see cref="CheckedOutDate"/> to the current time and <see cref="DueDate"/>
-    /// to 14 days from now.
-    /// </summary>
-    /// <param name="bookId">The unique identifier of the book being checked out</param>
-    /// <param name="memberId">The unique identifier of the member checking out the book</param>
-   public LedgerEntry(Guid bookId, Guid memberId)
-    {
-        Id = Guid.NewGuid();
-        LoanedBookId = bookId;
-        LoaningMemberId = memberId;
-        CheckedOutDate = DateTime.Now;
-        DueDate = CheckedOutDate.AddDays(14);
-        ReturnedDate = null;
-    }
 }
