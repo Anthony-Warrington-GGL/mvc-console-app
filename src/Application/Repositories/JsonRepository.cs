@@ -3,17 +3,25 @@ using mvc_console_app.Interfaces;
 
 namespace mvc_console_app.Repositories;
 
-public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> where TKey : notnull
-{
-    
+public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> 
+    where TKey : notnull
+{    
     DirectoryInfo RepoDirectory {get; set;}
 
     // any item that gets stored, save it as a file where the filename is the GUID of the item
     // item content is just the JSON serialisation of the item
 
+    /// <summary>
+    /// Gets all items stored in the repository
+    /// </summary>
+    /// <returns> An enumerable of all items in the repository </returns>
     public IEnumerable<TItem> GetAll()
     {
-        throw new NotImplementedException();
+        // get all the files in the repo directory
+        var files = GetAllFiles();
+
+        // deserialise each file into an item and return them
+        return DeserialiseFiles(files);
     }
 
     public bool RemoveItem(TKey key)
@@ -23,7 +31,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> where TKey :
 
     public bool StoreOrUpdateItem(TKey key, TItem item)
     {
-        // get the filename
+        // get the file path
         var filePath = GetFilePathForKey(key);
 
         // check if file already exists
@@ -41,16 +49,20 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> where TKey :
 
     public bool TryGetItem(TKey key, out TItem item)
     {
-        // get the filename of the key
+        // get the file path of the item
+        var filePath = GetFilePathForKey(key);
 
         // check if it exists, if it doesn't, return false
+        bool fileExists = File.Exists(filePath);
 
-        // if it exists, deserialise the item (what if it doesn't work? - try/catch throw exception)
+        if (!fileExists)
+        {
+            item = default!;
+            return false;
+        }
 
-        // set the out var to the item
-
-        // return whether or not the item exists
-        return true;
+        // if it exists, deserialise the item
+        return TryDeserialiseFile(filePath, out item);
     }
 
     public JsonRepository(string repoDirectoryPath)
@@ -94,5 +106,78 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> where TKey :
     private string GetJsonOfItem(TItem item)
     {
         return JsonSerializer.Serialize(item);
+    }
+
+    /// <summary>
+    /// Gets all .json files in the repo directory
+    /// </summary>
+    /// <returns> An enumerable of FileInfo for each .json file </returns>
+    private IEnumerable<FileInfo> GetAllFiles()
+    {
+        return RepoDirectory.GetFiles("*.json");
+    }
+
+    /// <summary>
+    /// Deserialises all files in the given enumerable into items
+    /// </summary>
+    /// <param name="files"> The files to deserialise </param>
+    /// <returns> An enumerable of deserialised items </returns>
+    private IEnumerable<TItem> DeserialiseFiles(IEnumerable<FileInfo> files)
+    {
+        var items = new List<TItem>();
+        
+        // for each file in the collection
+        foreach (var file in files)
+        {
+            // deserialise the file
+            if (TryDeserialiseFile(file.FullName, out var item))
+            {
+                // add the file to the list to return
+                items.Add(item);
+            }            
+        }
+
+        // return the list
+        return items;
+    }
+
+    /// <summary>
+    /// Tries to read and deserialise a single file into an item
+    /// </summary>
+    /// <param name="filePath"> The path of the file to deserialise </param>
+    /// <param name="item"> Set to the deserialised file if it was successful </param>
+    /// <returns> true if the JSON was successfully deserialised, false if not </returns>
+    private bool TryDeserialiseFile(string filePath, out TItem item)
+    {
+        // read the JSON string from the file - could this even be its own method?...
+        var json = File.ReadAllText(filePath);
+
+        item = TryDeserialiseJson(json, out var deserializedItemFromJson)
+            ? deserializedItemFromJson ?? default!
+            : default!;
+        return deserializedItemFromJson is not null;
+    }
+
+    /// <summary>
+    /// Deserialises a JSON string into an item
+    /// </summary>
+    /// <param name="json"> The JSON string to deserialise </param>
+    /// <returns> The deserialised item </returns>
+    private static bool TryDeserialiseJson(string json, out TItem? item)
+    {
+        // try to deserialise the json into this item type...
+        // and if it returns null then throw an exception
+        //return JsonSerializer.Deserialize<TItem>(json);//try/catch
+        try
+        {
+            item = JsonSerializer.Deserialize<TItem>(json);
+            return true;
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Failed to deserialise json - Error message : {ex.Message}");
+            item = default;
+            return false;
+        }
     }
 }

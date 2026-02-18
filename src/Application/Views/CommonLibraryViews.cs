@@ -63,22 +63,23 @@ public static class CommonLibraryViews
     /// <returns></returns>
     public static GetItemView<Member> GetMemberViewWithDetails(IUserInterface ui)
     {
-        return new GetItemView<Member>
-        (
-            itemFormatter: member =>
-            {
-                var books = member.BorrowedBooks;
-                if (books.Count != 0)
-                {
-                    var bookList = string.Join("\n", books.Select(b => $"    {b.Title}"));
-                    return $"{member}\n  Checked out books:\n{bookList}";
-                }
-                else
-                {
-                    return $"{member}";
-                }
-            },
-            ui: ui
-        );
+        // return new GetItemView<Member>
+        // (
+        //     itemFormatter: member =>
+        //     {
+        //         var books = member.BorrowedBooks;
+        //         if (books.Count != 0)
+        //         {
+        //             var bookList = string.Join("\n", books.Select(b => $"    {b.Title}"));
+        //             return $"{member}\n  Checked out books:\n{bookList}";
+        //         }
+        //         else
+        //         {
+        //             return $"{member}";
+        //         }
+        //     },
+        //     ui: ui
+        // );
+        throw new NotImplementedException();
     }
 }

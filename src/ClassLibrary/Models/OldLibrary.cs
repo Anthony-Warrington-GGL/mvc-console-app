@@ -128,55 +128,58 @@ public class LibraryModel : ILibrary
 
     public void CheckoutBook(Guid memberGuid, Guid bookGuid)
     {
-        Book? book = GetBookById(bookGuid);
-        Member? member = GetMemberById(memberGuid);
-        if (book is null || member is null)
-        {
-            throw new ArgumentException("Book or member not found.");
-        }
+        // Book? book = GetBookById(bookGuid);
+        // Member? member = GetMemberById(memberGuid);
+        // if (book is null || member is null)
+        // {
+        //     throw new ArgumentException("Book or member not found.");
+        // }
         
-        if (Books.Remove(book))
-        {
-            book.CheckedOutDate = DateTime.Now;
-            member.BorrowedBooks.Add(book);
-        }
-        else
-        {
-            throw new InvalidOperationException();
-        }
+        // if (Books.Remove(book))
+        // {
+        //     book.CheckedOutDate = DateTime.Now;
+        //     member.BorrowedBooks.Add(book);
+        // }
+        // else
+        // {
+        //     throw new InvalidOperationException();
+        // }
+        throw new NotImplementedException();
     }
 
     public void ReturnBook(Guid memberGuid, Guid bookId)
     {
-        Member? member = GetMemberById(memberGuid);
-        Book? book = GetBookFromCollection(bookId, member?.BorrowedBooks ?? []);
+        // Member? member = GetMemberById(memberGuid);
+        // Book? book = GetBookFromCollection(bookId, member?.BorrowedBooks ?? []);
         
-        if (book is null || member is null)
-        {
-            throw new ArgumentException("Book or member not found.");
-        }
+        // if (book is null || member is null)
+        // {
+        //     throw new ArgumentException("Book or member not found.");
+        // }
 
-        if (member.BorrowedBooks.Remove(book))
-        {
-            book.CheckedOutDate = null;
-            Books.Add(book);
-        }
-        else
-        {
-            throw new InvalidOperationException();
-        }
+        // if (member.BorrowedBooks.Remove(book))
+        // {
+        //     book.CheckedOutDate = null;
+        //     Books.Add(book);
+        // }
+        // else
+        // {
+        //     throw new InvalidOperationException();
+        // }
+        throw new NotImplementedException();
     }
 
     public IEnumerable<Book> GetBooksCheckedOutByMember(Guid memberId)
     {
-        Member? member = GetMemberById(memberId);
+        // Member? member = GetMemberById(memberId);
 
-        if (member is null)
-        {
-            throw new ArgumentException("Member not found.");
-        }
+        // if (member is null)
+        // {
+        //     throw new ArgumentException("Member not found.");
+        // }
 
-        return [.. member.BorrowedBooks];
+        // return [.. member.BorrowedBooks];
+        throw new NotImplementedException();
     } 
 
     private Book? GetBookFromCollection(Guid bookId, IEnumerable<Book> books)

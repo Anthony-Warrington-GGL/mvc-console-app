@@ -93,41 +93,42 @@ public class MainMenuView
 
     private void ReturnBookFlow()
     {
-        GetItemView<Member> getMemberView = CommonLibraryViews.GetMemberViewWithDetails(Ui);
+        throw new NotImplementedException();
+        // GetItemView<Member> getMemberView = CommonLibraryViews.GetMemberViewWithDetails(Ui);
 
-        // get user
-        var member = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
+        // // get user
+        // var member = getMemberView.GetItem("Select a Member", Controller.GetAllMembers());
 
-        if (member is null)
-        {
-            Ui.PresentItems("Error", ["No member selected."]);
-            return;
-        }
+        // if (member is null)
+        // {
+        //     Ui.PresentItems("Error", ["No member selected."]);
+        //     return;
+        // }
 
-        // Check if member has any borrowed books
-        if (!member.BorrowedBooks.Any())
-        {
-            Ui.PresentItems("Notice",
-                [$"{member.FirstName} {member.LastName} has no books checked out."]);
-            return;
-        }
+        // // Check if member has any borrowed books
+        // if (!member.BorrowedBooks.Any())
+        // {
+        //     Ui.PresentItems("Notice",
+        //         [$"{member.FirstName} {member.LastName} has no books checked out."]);
+        //     return;
+        // }
 
-        // get the members list of checked-out books
-        var getBookView = CommonLibraryViews.GetBookView(Ui);
-        var book = getBookView.GetItem("Choose a book to return", member.BorrowedBooks);
+        // // get the members list of checked-out books
+        // var getBookView = CommonLibraryViews.GetBookView(Ui);
+        // var book = getBookView.GetItem("Choose a book to return", member.BorrowedBooks);
 
-        // call the Library to return the book
-        if (book is not null)
-        {
-            Controller.ReturnBook(member.Id, book.Id);
+        // // call the Library to return the book
+        // if (book is not null)
+        // {
+        //     Controller.ReturnBook(member.Id, book.Id);
 
-            Ui.PresentItems("Success",
-                [$"{member.FirstName} {member.LastName} has returned \"{book.Title}\" by {book.Author}."]);
-        }
-        else
-        {
-            Ui.PresentItems("Error", ["No book selected."]);
-        }
+        //     Ui.PresentItems("Success",
+        //         [$"{member.FirstName} {member.LastName} has returned \"{book.Title}\" by {book.Author}."]);
+        // }
+        // else
+        // {
+        //     Ui.PresentItems("Error", ["No book selected."]);
+        // }
     }
 
     private void SearchBooksFlow()

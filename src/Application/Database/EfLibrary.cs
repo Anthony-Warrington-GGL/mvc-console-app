@@ -14,21 +14,22 @@ public class EfLibraryModel : ILibrary
 
     public void CheckoutBook(Guid memberId, Guid bookId)
     {
-        Book? book = GetBookByIdPrivate(bookId);
-        Member? member = GetMemberByIdPrivate(memberId);
-        if (book is null || member is null)
-        {
-            throw new ArgumentException("Book or member not found.");
-        }
+        // Book? book = GetBookByIdPrivate(bookId);
+        // Member? member = GetMemberByIdPrivate(memberId);
+        // if (book is null || member is null)
+        // {
+        //     throw new ArgumentException("Book or member not found.");
+        // }
         
-        // Set the checkout date and add to member's borrowed books
-        book.CheckedOutDate = DateTime.Now;
-        // if book is in inventory, then add book
+        // // Set the checkout date and add to member's borrowed books
+        // book.CheckedOutDate = DateTime.Now;
+        // // if book is in inventory, then add book
         
-            member.BorrowedBooks.Add(book);
-        // else, its not in stock...
+        //     member.BorrowedBooks.Add(book);
+        // // else, its not in stock...
         
-        Database.SaveChanges();
+        // Database.SaveChanges();
+        throw new NotImplementedException();
     }
 
     public Book CreateBook(string author, string title)
@@ -107,17 +108,18 @@ public class EfLibraryModel : ILibrary
 
     private Member? GetMemberByIdPrivate(Guid memberId)
     {
-        Member? member = null;
-        foreach (Member m in Database.Members)
-        {
-            if (m.Id == memberId)
-            {
-                member = m;
-                // Load the borrowed books for this member
-                Database.Entry(member).Collection(m => m.BorrowedBooks).Load();
-                break;
-            }
-        }
-        return member;
+        // Member? member = null;
+        // foreach (Member m in Database.Members)
+        // {
+        //     if (m.Id == memberId)
+        //     {
+        //         member = m;
+        //         // Load the borrowed books for this member
+        //         Database.Entry(member).Collection(m => m.BorrowedBooks).Load();
+        //         break;
+        //     }
+        // }
+        // return member;
+        throw new NotImplementedException();
     }
 }

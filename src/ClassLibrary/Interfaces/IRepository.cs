@@ -2,7 +2,7 @@ using System.Net.ServerSentEvents;
 
 namespace mvc_console_app.Interfaces;
 
-public interface IRepository<TKey, TItem>
+public interface IRepository<TKey, TItem> where TKey : notnull
 {
     /// <summary>
     /// Tries to create an item in the repository or, if the item already exists,
