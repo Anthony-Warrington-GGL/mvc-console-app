@@ -12,6 +12,16 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     // item content is just the JSON serialisation of the item
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public IEnumerable<TKey> GetAllKeys()
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
     /// Gets all items stored in the repository
     /// </summary>
     /// <returns> An enumerable of all items in the repository </returns>
@@ -24,11 +34,32 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         return DeserialiseFiles(files);
     }
 
+    /// <summary>
+    /// Removes an item from the repository by its key
+    /// </summary>
+    /// <param name="key"> The key of the item to remove </param>
+    /// <returns> True if the item was removed, false if it didn't exist </returns>
     public bool RemoveItem(TKey key)
     {
-        throw new NotImplementedException();
+        // get the file path of the item
+        var filePath = GetFilePathForKey(key);
+
+        // check if the file exists, if not return false
+        bool fileExists = File.Exists(filePath);
+        
+        if (!fileExists)
+        {
+            return false;
+        }
+
+        // delete the file
+        DeleteFile(filePath);
+
+        // return true to indicate successful removal
+        return true;
     }
 
+    // TODO: DOCUMENT
     public bool StoreOrUpdateItem(TKey key, TItem item)
     {
         // get the file path
@@ -47,6 +78,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         return fileExists;
     }
 
+    // TODO: DOCUMENT
     public bool TryGetItem(TKey key, out TItem item)
     {
         // get the file path of the item
@@ -65,6 +97,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         return TryDeserialiseFile(filePath, out item);
     }
 
+    // TODO: DOCUMENT
     public JsonRepository(string repoDirectoryPath)
     {
         RepoDirectory = new DirectoryInfo(repoDirectoryPath);
@@ -179,5 +212,14 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
             item = default;
             return false;
         }
+    }
+
+    /// <summary>
+    /// Deletes the file at the given path
+    /// </summary>
+    /// <param name="filePath"> The path of the file to delete </param>
+    private void DeleteFile(string filePath)
+    {
+        File.Delete(filePath);
     }
 }

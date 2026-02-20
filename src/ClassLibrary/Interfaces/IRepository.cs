@@ -1,9 +1,13 @@
-using System.Net.ServerSentEvents;
-
 namespace mvc_console_app.Interfaces;
 
 public interface IRepository<TKey, TItem> where TKey : notnull
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<TKey> GetAllKeys();
+
     /// <summary>
     /// Tries to create an item in the repository or, if the item already exists,
     /// overwrites it with the passed item
@@ -40,5 +44,5 @@ public interface IRepository<TKey, TItem> where TKey : notnull
     /// <param name="items"> A collection containing all the items in the repository</param>
     /// <returns> True if any items were retrieved, false if no items were retrieved</returns>
     /// <exception cref="InvalidOperationException"> When the repository is in a state that does not allow reading items</exception>
-    public IEnumerable<TItem> GetAll(); // return empty list - change to just "getall"
+    public IEnumerable<TItem> GetAllItems();
 }
