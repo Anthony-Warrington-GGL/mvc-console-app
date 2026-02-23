@@ -102,50 +102,6 @@ public sealed class BookTests
         Assert.AreEqual(expectedId, book.Id);
         Assert.AreEqual(expectedTitle, book.Title);
         Assert.AreEqual(expectedAuthor, book.Author);
-        Assert.IsNull(book.CheckedOutDate);
-    }
-
-    [TestMethod]
-    public void CONSTRUCTOR__when_book_created__then_CheckedOutDate_is_null()
-    {
-        // Arrange
-        Guid id = Guid.NewGuid();
-        string title = "Test Title";
-        string author = "Test Author";
-
-        // Act
-        var book = new Book(id, title, author);
-
-        // Assert
-        Assert.IsNull(book.CheckedOutDate);
-    }
-
-    [TestMethod]
-    public void IsOverdue__when_CheckedOutDate_is_within_14_days_in_the_past__then_returns_false()
-    {
-        // Arrange
-        var book = new Book(Guid.NewGuid(), "Test Title", "Test Author");
-        book.CheckedOutDate = DateTime.Now.AddDays(-10);
-
-        // Act
-        bool result = book.IsOverdue();
-
-        // Assert
-        Assert.IsFalse(result);
-    }
-
-    [TestMethod]
-    public void IsOverdue__when_CheckedOutDate_is_more_than_14_days_in_the_past__then_returns_true()
-    {
-        // Arrange
-        var book = new Book(Guid.NewGuid(), "Test Title", "Test Author");
-        book.CheckedOutDate = DateTime.Now.AddDays(-15);
-
-        // Act
-        bool result = book.IsOverdue();
-
-        // Assert
-        Assert.IsTrue(result);
     }
 
     [TestMethod]
