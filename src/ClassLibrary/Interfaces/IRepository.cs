@@ -3,10 +3,16 @@ namespace mvc_console_app.Interfaces;
 public interface IRepository<TKey, TItem> where TKey : notnull
 {
     /// <summary>
-    /// 
+    /// TODO: finish documenting
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<TKey> GetAllKeys();
+    public IEnumerable<TKey> Keys {get;}
+
+    /// <summary>
+    /// Gets the items stored in the repository
+    /// </summary>
+    /// <returns> An <see cref="IEnumerable{T}"/> of type <typeparamref name="TItem"/> </returns>
+    public IEnumerable<TItem> Items {get;}
 
     /// <summary>
     /// Tries to create an item in the repository or, if the item already exists,
@@ -38,11 +44,5 @@ public interface IRepository<TKey, TItem> where TKey : notnull
     /// <exception cref="InvalidOperationException"> When the repository is in a state that does not allow deleting items</exception>
     public bool RemoveItem(TKey key);
 
-    /// <summary>
-    /// Retrieves all items from the repository
-    /// </summary>
-    /// <param name="items"> A collection containing all the items in the repository</param>
-    /// <returns> True if any items were retrieved, false if no items were retrieved</returns>
-    /// <exception cref="InvalidOperationException"> When the repository is in a state that does not allow reading items</exception>
-    public IEnumerable<TItem> GetAllItems();
+
 }

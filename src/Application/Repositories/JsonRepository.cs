@@ -1,9 +1,10 @@
+using System.Collections;
 using System.Text.Json;
 using mvc_console_app.Interfaces;
 
 namespace mvc_console_app.Repositories;
 
-public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem> 
+public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     where TKey : notnull
 {    
     DirectoryInfo RepoDirectory {get; set;}
@@ -12,26 +13,26 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     // item content is just the JSON serialisation of the item
 
     /// <summary>
-    /// 
+    /// TODO:
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public IEnumerable<TKey> GetAllKeys()
-    {
-        throw new NotImplementedException();
-    }
+    public IEnumerable<TKey> Keys {get;}
 
     /// <summary>
     /// Gets all items stored in the repository
     /// </summary>
     /// <returns> An enumerable of all items in the repository </returns>
-    public IEnumerable<TItem> GetAllItems()
+    public IEnumerable<TItem> Items
     {
-        // get all the files in the repo directory
-        var files = GetAllFiles();
+        get
+        {
+            // get all the files in the repo directory
+            var files = GetAllFiles();
 
-        // deserialise each file into an item and return them
-        return DeserialiseFiles(files);
+            // deserialise each file into an item and return them
+            return DeserialiseFiles(files);
+        }
     }
 
     /// <summary>
