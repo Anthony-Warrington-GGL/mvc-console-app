@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 using mvc_console_app;
@@ -44,14 +45,25 @@ if (false)
     mainView.Present();
 }
 var repoDirectoryPath = "./repoFiles";
-var repository = new JsonRepository<Guid, int>(repoDirectoryPath);
+var repository = new JsonRepository<Guid, Book>(repoDirectoryPath);
 
-Guid keyToSave = Guid.NewGuid();
-repository.StoreOrUpdateItem(keyToSave, 111111);
-repository.StoreOrUpdateItem(Guid.NewGuid(), 1283123);
-repository.StoreOrUpdateItem(Guid.NewGuid(), 12376124);
 
-var allItems = repository.GetAll();
+List<Book> booksList =
+[
+    new Book(Guid.NewGuid(), "1984", "George Orwell"),
+    new Book(Guid.NewGuid(), "Animal Farm", "George Orwell"),
+    new Book(Guid.NewGuid(), "Cat", "Dog")
+];
+
+
+Guid keyToSave = booksList[0].Id;
+foreach (var book in booksList)
+{
+    repository.StoreOrUpdateItem(book.Id, book);
+}
+
+
+var allItems = repository.GetAllItems();
 
 foreach (var item in allItems)
 {
@@ -75,7 +87,16 @@ foreach (var key in keysToCheck)
         Console.WriteLine($"{key} : not found");
     }
 }
-
+Console.ReadKey();
+if (repository.RemoveItem(keyToSave))
+{
+    Console.WriteLine($"{keyToSave} removed.");
+}
+else
+{
+    Console.WriteLine($"{keyToSave} was not removed.");
+}
+Console.ReadKey();
 if (repository.RemoveItem(keyToSave))
 {
     Console.WriteLine($"{keyToSave} removed.");
@@ -85,11 +106,5 @@ else
     Console.WriteLine($"{keyToSave} was not removed.");
 }
 
-if (repository.RemoveItem(keyToSave))
-{
-    Console.WriteLine($"{keyToSave} removed.");
-}
-else
-{
-    Console.WriteLine($"{keyToSave} was not removed.");
-}
+// Currently there is no way for the repo to get the key - once it's assigned, its lost
+// so, there should be a way to retrieve all KVPs in the repo

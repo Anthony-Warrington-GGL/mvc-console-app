@@ -25,7 +25,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// Gets all items stored in the repository
     /// </summary>
     /// <returns> An enumerable of all items in the repository </returns>
-    public IEnumerable<TItem> GetAll()
+    public IEnumerable<TItem> GetAllItems()
     {
         // get all the files in the repo directory
         var files = GetAllFiles();
