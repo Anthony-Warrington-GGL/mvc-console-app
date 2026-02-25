@@ -1,12 +1,15 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using mvc_console_app.Interfaces;
 
 namespace mvc_console_app.Repositories;
 
+// TODO: finish updating the methods to read KVPs and return what matters
+
 public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     where TKey : notnull
-{    
+{
     DirectoryInfo RepoDirectory {get; set;}
 
     // any item that gets stored, save it as a file where the filename is the GUID of the item
@@ -17,7 +20,20 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public IEnumerable<TKey> Keys {get;}
+    public IEnumerable<TKey> Keys 
+    {
+        get
+        {
+            // Get all the filepaths
+            var files = GetAllFiles();
+
+            // Get all valid keys
+            var keys = GetValidKeysFromFileinfos(files);
+                
+            // return keys
+            return keys;
+        }
+    }
 
     /// <summary>
     /// Gets all items stored in the repository
@@ -69,8 +85,8 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         // check if file already exists
         bool fileExists = File.Exists(filePath);
 
-        // serialise the item into JSON
-        var json = GetJsonOfItem(item);
+        // serialise the item and the key into JSON
+        var json = GetJsonOfKeyItemPair(key, item);
 
         // write the JSON string to the file
         File.WriteAllText(filePath, json);
@@ -133,13 +149,15 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     }
 
     /// <summary>
-    /// Serialises a given item into a JSON string
+    /// Serialises a key and an item as a pair into a JSON string
     /// </summary>
-    /// <param name="item"> The item to serialize </param>
-    /// <returns> The string of the serialized JSON item </returns>
-    private string GetJsonOfItem(TItem item)
+    /// <param name="key"> The key of the pair to serialize </param>
+    /// <param name="item"> The item of the pair to serialize </param>
+    /// <returns> The string of the serialized JSON key item pair </returns>
+    private string GetJsonOfKeyItemPair(TKey key, TItem item)
     {
-        return JsonSerializer.Serialize(item);
+        var kvp = new KeyValuePair<TKey, TItem>(key, item);
+        return JsonSerializer.Serialize(kvp);
     }
 
     /// <summary>
@@ -222,5 +240,54 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     private void DeleteFile(string filePath)
     {
         File.Delete(filePath);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fileInfos"></param>
+    /// <returns></returns>
+    private IEnumerable<TKey> GetValidKeysFromFileinfos (IEnumerable<FileInfo>? fileInfos)
+    {
+        // create empty list of keys
+        List<TKey> keys = [];
+        
+        if (fileInfos is null)
+        {
+            return keys;
+        }
+
+        // for each fileInfo
+        foreach(var fileInfo in fileInfos)
+        {
+            // if its valid
+            if (IsFileAValidItem(fileInfo))
+            {                
+                // get the key
+                var key = GetKeyFromFileInfo(fileInfo);
+
+                // add the key to the list of keys to return
+                keys.Add(key);
+            }                
+        }
+        // return the list of keys
+        return keys;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fileInfo"></param>
+    /// <returns></returns>
+    private bool IsFileAValidItem(FileInfo? fileInfo)
+    {
+        return (fileInfo is null)
+            ? false
+            : TryDeserialiseFile(fileInfo.FullName, out _);
+    }
+
+    private TKey GetKeyFromFileInfo (FileInfo fileInfo)
+    {
+        throw new NotImplementedException();
     }
 }
