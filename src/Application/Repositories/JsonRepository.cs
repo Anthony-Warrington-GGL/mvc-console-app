@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using mvc_console_app.Interfaces;
 
@@ -25,13 +23,13 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         get
         {
             // Get all the filepaths
-            var files = GetAllFiles();
+            var fileInfos = GetAllFiles();
 
-            // Get all valid keys
-            var keys = GetValidKeysFromFileinfos(files);
-                
-            // return keys
-            return keys;
+            // get key value pairs
+            var keyItemKvps = GetKeyValuePairs(fileInfos);
+
+            // return a list of just the items
+            return GetKeysFromKeyValuePairs(keyItemKvps);
         }
     }
 
@@ -44,10 +42,13 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         get
         {
             // get all the files in the repo directory
-            var files = GetAllFiles();
+            var fileInfos = GetAllFiles();
 
-            // deserialise each file into an item and return them
-            return DeserialiseFiles(files);
+            // get key value pairs
+            var keyItemKvps = GetKeyValuePairs(fileInfos);
+
+            // return a list of just the items
+            return GetItemsFromKeyValuePairs(keyItemKvps);
         }
     }
 
@@ -101,17 +102,18 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         // get the file path of the item
         var filePath = GetFilePathForKey(key);
 
-        // check if it exists, if it doesn't, return false
-        bool fileExists = File.Exists(filePath);
-
-        if (!fileExists)
-        {
-            item = default!;
-            return false;
-        }
+        // get the fileInfo
+        var fileInfo = new FileInfo(filePath);
 
         // if it exists, deserialise the item
-        return TryDeserialiseFile(filePath, out item);
+        if (fileInfo.Exists && TryGetKeyValuePairFromFile(fileInfo, out var kvp))
+        {
+            item = kvp.Value;
+            return true;
+        }
+        
+        item = default!;
+        return false;
     }
 
     // TODO: DOCUMENT
@@ -122,6 +124,40 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
         {
             throw new ArgumentException($"Directory '{repoDirectoryPath}' doesn't exist. Repo directory path must exist.");
         }
+    }
+
+    /// <summary>
+    /// Gets a list of items from a list of key-item key value pairs
+    /// </summary>
+    /// <param name="keyValuePairs"> The given list of key value pairs </param>
+    /// <returns> The list of items </returns>
+    private IEnumerable<TItem> GetItemsFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    {
+        List<TItem> items = [];
+
+        foreach(var kvp in keyValuePairs)
+        {
+            items.Add(kvp.Value);
+        }
+
+        return items;
+    }
+
+    /// <summary>
+    /// Gets a list of keys from a list of key-item key value pairs
+    /// </summary>
+    /// <param name="keyValuePairs"> The given list of key value pairs </param>
+    /// <returns> The list of keys </returns>
+    private IEnumerable<TKey> GetKeysFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    {
+        List<TKey> keys = [];
+
+        foreach(var kvp in keyValuePairs)
+        {
+            keys.Add(kvp.Key);
+        }
+
+        return keys;
     }
 
     /// <summary>
@@ -170,64 +206,60 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     }
 
     /// <summary>
-    /// Deserialises all files in the given enumerable into items
+    /// Gets the key and item key value pairs from a list of files
     /// </summary>
-    /// <param name="files"> The files to deserialise </param>
-    /// <returns> An enumerable of deserialised items </returns>
-    private IEnumerable<TItem> DeserialiseFiles(IEnumerable<FileInfo> files)
+    /// <param name="files"> The list of given files </param>
+    /// <returns> The key and item key value pairs </returns>
+    private IEnumerable<KeyValuePair<TKey, TItem>> GetKeyValuePairs (IEnumerable<FileInfo> files)
     {
-        var items = new List<TItem>();
-        
-        // for each file in the collection
+        // make a list to hold the kvps
+        List<KeyValuePair<TKey, TItem>> keyValuePairs = [];
+
+        // for each file in the list
         foreach (var file in files)
         {
-            // deserialise the file
-            if (TryDeserialiseFile(file.FullName, out var item))
-            {
-                // add the file to the list to return
-                items.Add(item);
-            }            
+            // try to get the kvp from the file
+            if (TryGetKeyValuePairFromFile(file, out var keyValuePair))
+            {                
+                // if successful, add it to the list
+                keyValuePairs.Add(keyValuePair);
+            }
         }
 
-        // return the list
-        return items;
+        return keyValuePairs;
     }
 
     /// <summary>
-    /// Tries to read and deserialise a single file into an item
+    /// Tries to get a key value pair from a file's contents
     /// </summary>
-    /// <param name="filePath"> The path of the file to deserialise </param>
-    /// <param name="item"> Set to the deserialised file if it was successful </param>
-    /// <returns> true if the JSON was successfully deserialised, false if not </returns>
-    private bool TryDeserialiseFile(string filePath, out TItem item)
+    /// <param name="file"> The given file </param>
+    /// <param name="keyValuePair"> If successful the key value pair to return </param>
+    /// <returns> True if the key value pair was successfully retrieved, false if not </returns>
+    private bool TryGetKeyValuePairFromFile(FileInfo file, out KeyValuePair<TKey, TItem> keyValuePair)
     {
-        // read the JSON string from the file - could this even be its own method?...
-        var json = File.ReadAllText(filePath);
+        // read the file content
+        var json = File.ReadAllText(file.FullName);
 
-        item = TryDeserialiseJson(json, out var deserializedItemFromJson)
-            ? deserializedItemFromJson ?? default!
-            : default!;
-        return deserializedItemFromJson is not null;
+        return TryDeserialiseJson(json, out keyValuePair);
     }
 
     /// <summary>
-    /// Deserialises a JSON string into an item
+    /// Tries to deserialise a JSON string into an instance of a specified type
     /// </summary>
     /// <param name="json"> The JSON string to deserialise </param>
-    /// <returns> The deserialised item </returns>
-    private static bool TryDeserialiseJson(string json, out TItem? item)
+    /// <param name="item">  </param>
+    /// <typeparam name="T"> the type to deserialise the json to </typeparam>
+    /// <returns> true if the json was successfully deserialised, false if not </returns>
+    private static bool TryDeserialiseJson<T>(string json, out T? item)
     {
-        // try to deserialise the json into this item type...
-        // and if it returns null then throw an exception
-        //return JsonSerializer.Deserialize<TItem>(json);//try/catch
         try
         {
-            item = JsonSerializer.Deserialize<TItem>(json);
+            item = JsonSerializer.Deserialize<T>(json);
             return true;
         }
         catch (JsonException ex)
         {
-            Console.WriteLine($"Failed to deserialise json - Error message : {ex.Message}");
+            Console.WriteLine($"Failed to deserialise json to type {typeof(T).FullName} - Error message : {ex.Message}");
             item = default;
             return false;
         }
@@ -240,54 +272,5 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     private void DeleteFile(string filePath)
     {
         File.Delete(filePath);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="fileInfos"></param>
-    /// <returns></returns>
-    private IEnumerable<TKey> GetValidKeysFromFileinfos (IEnumerable<FileInfo>? fileInfos)
-    {
-        // create empty list of keys
-        List<TKey> keys = [];
-        
-        if (fileInfos is null)
-        {
-            return keys;
-        }
-
-        // for each fileInfo
-        foreach(var fileInfo in fileInfos)
-        {
-            // if its valid
-            if (IsFileAValidItem(fileInfo))
-            {                
-                // get the key
-                var key = GetKeyFromFileInfo(fileInfo);
-
-                // add the key to the list of keys to return
-                keys.Add(key);
-            }                
-        }
-        // return the list of keys
-        return keys;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="fileInfo"></param>
-    /// <returns></returns>
-    private bool IsFileAValidItem(FileInfo? fileInfo)
-    {
-        return (fileInfo is null)
-            ? false
-            : TryDeserialiseFile(fileInfo.FullName, out _);
-    }
-
-    private TKey GetKeyFromFileInfo (FileInfo fileInfo)
-    {
-        throw new NotImplementedException();
     }
 }

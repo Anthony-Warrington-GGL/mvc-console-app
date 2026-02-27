@@ -53,9 +53,8 @@ List<Book> booksList =
 [
     new Book(Guid.NewGuid(), "1984", "George Orwell"),
     new Book(Guid.NewGuid(), "Animal Farm", "George Orwell"),
-    new Book(Guid.NewGuid(), "Cat", "Dog")
+    new Book(Guid.NewGuid(), "Pride and Prejudice", "Jane Austen")
 ];
-
 
 Guid keyToSave = booksList[0].Id;
 foreach (var book in booksList)
@@ -63,8 +62,8 @@ foreach (var book in booksList)
     repository.StoreOrUpdateItem(book.Id, book);
 }
 
-
-var allItems = repository.GetAllItems();
+var allItems = repository.Items;
+Console.WriteLine("number of items stored: ", allItems.Count());
 
 foreach (var item in allItems)
 {
