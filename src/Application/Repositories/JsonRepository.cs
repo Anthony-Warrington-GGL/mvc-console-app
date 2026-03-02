@@ -8,30 +8,7 @@ namespace mvc_console_app.Repositories;
 public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     where TKey : notnull
 {
-    DirectoryInfo RepoDirectory {get; set;}
-
-    // any item that gets stored, save it as a file where the filename is the GUID of the item
-    // item content is just the JSON serialisation of the item
-
-    /// <summary>
-    /// TODO:
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public IEnumerable<TKey> Keys 
-    {
-        get
-        {
-            // Get all the filepaths
-            var fileInfos = GetAllFiles();
-
-            // get key value pairs
-            var keyItemKvps = GetKeyValuePairs(fileInfos);
-
-            // return a list of just the items
-            return GetKeysFromKeyValuePairs(keyItemKvps);
-        }
-    }
+    // Properties
 
     /// <summary>
     /// Gets all items stored in the repository
@@ -41,82 +18,38 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     {
         get
         {
-            // get all the files in the repo directory
             var fileInfos = GetAllFiles();
-
-            // get key value pairs
             var keyItemKvps = GetKeyValuePairs(fileInfos);
-
-            // return a list of just the items
             return GetItemsFromKeyValuePairs(keyItemKvps);
         }
     }
 
     /// <summary>
-    /// Removes an item from the repository by its key
+    /// Gets all keys stored in the repository
     /// </summary>
-    /// <param name="key"> The key of the item to remove </param>
-    /// <returns> True if the item was removed, false if it didn't exist </returns>
-    public bool RemoveItem(TKey key)
+    /// <returns> An enumerable of all keys in the repository </returns>
+    public IEnumerable<TKey> Keys
     {
-        // get the file path of the item
-        var filePath = GetFilePathForKey(key);
-
-        // check if the file exists, if not return false
-        bool fileExists = File.Exists(filePath);
-        
-        if (!fileExists)
+        get
         {
-            return false;
+            var fileInfos = GetAllFiles();
+            var keyItemKvps = GetKeyValuePairs(fileInfos);
+            return GetKeysFromKeyValuePairs(keyItemKvps);
         }
-
-        // delete the file
-        DeleteFile(filePath);
-
-        // return true to indicate successful removal
-        return true;
     }
 
-    // TODO: DOCUMENT
-    public bool StoreOrUpdateItem(TKey key, TItem item)
-    {
-        // get the file path
-        var filePath = GetFilePathForKey(key);
+    /// <summary>
+    /// The directory in which repository item files are stored
+    /// </summary>
+    DirectoryInfo RepoDirectory { get; set; }
 
-        // check if file already exists
-        bool fileExists = File.Exists(filePath);
+    // Public methods
 
-        // serialise the item and the key into JSON
-        var json = GetJsonOfKeyItemPair(key, item);
-
-        // write the JSON string to the file
-        File.WriteAllText(filePath, json);
-
-        // return if the file already existed or not
-        return fileExists;
-    }
-
-    // TODO: DOCUMENT
-    public bool TryGetItem(TKey key, out TItem item)
-    {
-        // get the file path of the item
-        var filePath = GetFilePathForKey(key);
-
-        // get the fileInfo
-        var fileInfo = new FileInfo(filePath);
-
-        // if it exists, deserialise the item
-        if (fileInfo.Exists && TryGetKeyValuePairFromFile(fileInfo, out var kvp))
-        {
-            item = kvp.Value;
-            return true;
-        }
-        
-        item = default!;
-        return false;
-    }
-
-    // TODO: DOCUMENT
+    /// <summary>
+    /// Creates a new instance of <see cref="JsonRepository{TKey, TItem}"/> backed by the given directory
+    /// </summary>
+    /// <param name="repoDirectoryPath"> The path of the directory to use as the repository store </param>
+    /// <exception cref="ArgumentException"> Thrown if the given directory path does not exist </exception>
     public JsonRepository(string repoDirectoryPath)
     {
         RepoDirectory = new DirectoryInfo(repoDirectoryPath);
@@ -127,51 +60,78 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     }
 
     /// <summary>
-    /// Gets a list of items from a list of key-item key value pairs
+    /// Removes an item from the repository by its key
     /// </summary>
-    /// <param name="keyValuePairs"> The given list of key value pairs </param>
-    /// <returns> The list of items </returns>
-    private IEnumerable<TItem> GetItemsFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    /// <param name="key"> The key of the item to remove </param>
+    /// <returns> True if the item was removed, false if it didn't exist </returns>
+    public bool RemoveItem(TKey key)
     {
-        List<TItem> items = [];
+        var filePath = GetFilePathForKey(key);
+        bool fileExists = File.Exists(filePath);
 
-        foreach(var kvp in keyValuePairs)
+        if (!fileExists)
         {
-            items.Add(kvp.Value);
+            return false;
         }
 
-        return items;
+        DeleteFile(filePath);
+        return true;
     }
 
     /// <summary>
-    /// Gets a list of keys from a list of key-item key value pairs
+    /// Stores a new item in the repository, or overwrites the existing item if the key already exists
     /// </summary>
-    /// <param name="keyValuePairs"> The given list of key value pairs </param>
-    /// <returns> The list of keys </returns>
-    private IEnumerable<TKey> GetKeysFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    /// <param name="key"> The key to store the item under </param>
+    /// <param name="item"> The item to store </param>
+    /// <returns> True if an existing item was overwritten, false if the item was newly stored </returns>
+    public bool StoreOrUpdateItem(TKey key, TItem item)
     {
-        List<TKey> keys = [];
-
-        foreach(var kvp in keyValuePairs)
-        {
-            keys.Add(kvp.Key);
-        }
-
-        return keys;
+        var filePath = GetFilePathForKey(key);
+        bool fileExists = File.Exists(filePath);
+        var json = GetJsonOfKeyItemPair(key, item);
+        File.WriteAllText(filePath, json);
+        return fileExists;
     }
 
     /// <summary>
-    /// Gets the full filepath for a given key
+    /// Tries to retrieve an item from the repository by its key
     /// </summary>
-    /// <param name="key"> The key to get the filepath for </param>
-    /// <returns> The full filepath for the given key </returns>
-    private string GetFilePathForKey(TKey key)
+    /// <param name="key"> The key of the item to retrieve </param>
+    /// <param name="item"> The retrieved item if found, otherwise the default value </param>
+    /// <returns> True if the item was found and retrieved, false if it didn't exist </returns>
+    public bool TryGetItem(TKey key, out TItem item)
     {
-        // turn the key into a string for the filename
-        var fileName = GetFileNameForKey(key);
+        var filePath = GetFilePathForKey(key);
+        var fileInfo = new FileInfo(filePath);
 
-        // combine the directory and the key filepath string
-        return Path.Combine(RepoDirectory.FullName, fileName);
+        if (fileInfo.Exists && TryGetKeyValuePairFromFile(fileInfo, out var kvp))
+        {
+            item = kvp.Value;
+            return true;
+        }
+
+        item = default!;
+        return false;
+    }
+
+    // Private methods
+
+    /// <summary>
+    /// Deletes the file at the given path
+    /// </summary>
+    /// <param name="filePath"> The path of the file to delete </param>
+    private void DeleteFile(string filePath)
+    {
+        File.Delete(filePath);
+    }
+
+    /// <summary>
+    /// Gets all .json files in the repo directory
+    /// </summary>
+    /// <returns> An enumerable of FileInfo for each .json file </returns>
+    private IEnumerable<FileInfo> GetAllFiles()
+    {
+        return RepoDirectory.GetFiles("*.json");
     }
 
     /// <summary>
@@ -182,6 +142,32 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     private string GetFileNameForKey(TKey key)
     {
         return $"{key}.json";
+    }
+
+    /// <summary>
+    /// Gets the full filepath for a given key
+    /// </summary>
+    /// <param name="key"> The key to get the filepath for </param>
+    /// <returns> The full filepath for the given key </returns>
+    private string GetFilePathForKey(TKey key)
+    {
+        var fileName = GetFileNameForKey(key);
+        return Path.Combine(RepoDirectory.FullName, fileName);
+    }
+
+    /// <summary>
+    /// Gets a list of items from a list of key-item key value pairs
+    /// </summary>
+    /// <param name="keyValuePairs"> The given list of key value pairs </param>
+    /// <returns> The list of items </returns>
+    private IEnumerable<TItem> GetItemsFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    {
+        List<TItem> items = [];
+        foreach (var kvp in keyValuePairs)
+        {
+            items.Add(kvp.Value);
+        }
+        return items;
     }
 
     /// <summary>
@@ -197,59 +183,45 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     }
 
     /// <summary>
-    /// Gets all .json files in the repo directory
-    /// </summary>
-    /// <returns> An enumerable of FileInfo for each .json file </returns>
-    private IEnumerable<FileInfo> GetAllFiles()
-    {
-        return RepoDirectory.GetFiles("*.json");
-    }
-
-    /// <summary>
     /// Gets the key and item key value pairs from a list of files
     /// </summary>
     /// <param name="files"> The list of given files </param>
     /// <returns> The key and item key value pairs </returns>
-    private IEnumerable<KeyValuePair<TKey, TItem>> GetKeyValuePairs (IEnumerable<FileInfo> files)
+    private IEnumerable<KeyValuePair<TKey, TItem>> GetKeyValuePairs(IEnumerable<FileInfo> files)
     {
-        // make a list to hold the kvps
         List<KeyValuePair<TKey, TItem>> keyValuePairs = [];
-
-        // for each file in the list
         foreach (var file in files)
         {
-            // try to get the kvp from the file
             if (TryGetKeyValuePairFromFile(file, out var keyValuePair))
-            {                
-                // if successful, add it to the list
+            {
                 keyValuePairs.Add(keyValuePair);
             }
         }
-
         return keyValuePairs;
     }
 
     /// <summary>
-    /// Tries to get a key value pair from a file's contents
+    /// Gets a list of keys from a list of key-item key value pairs
     /// </summary>
-    /// <param name="file"> The given file </param>
-    /// <param name="keyValuePair"> If successful the key value pair to return </param>
-    /// <returns> True if the key value pair was successfully retrieved, false if not </returns>
-    private bool TryGetKeyValuePairFromFile(FileInfo file, out KeyValuePair<TKey, TItem> keyValuePair)
+    /// <param name="keyValuePairs"> The given list of key value pairs </param>
+    /// <returns> The list of keys </returns>
+    private IEnumerable<TKey> GetKeysFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
     {
-        // read the file content
-        var json = File.ReadAllText(file.FullName);
-
-        return TryDeserialiseJson(json, out keyValuePair);
+        List<TKey> keys = [];
+        foreach (var kvp in keyValuePairs)
+        {
+            keys.Add(kvp.Key);
+        }
+        return keys;
     }
 
     /// <summary>
     /// Tries to deserialise a JSON string into an instance of a specified type
     /// </summary>
     /// <param name="json"> The JSON string to deserialise </param>
-    /// <param name="item">  </param>
-    /// <typeparam name="T"> the type to deserialise the json to </typeparam>
-    /// <returns> true if the json was successfully deserialised, false if not </returns>
+    /// <param name="item"> The deserialised instance if successful, otherwise the default value </param>
+    /// <typeparam name="T"> The type to deserialise the JSON to </typeparam>
+    /// <returns> True if the JSON was successfully deserialised, false if not </returns>
     private static bool TryDeserialiseJson<T>(string json, out T? item)
     {
         try
@@ -266,11 +238,14 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     }
 
     /// <summary>
-    /// Deletes the file at the given path
+    /// Tries to get a key value pair from a file's contents
     /// </summary>
-    /// <param name="filePath"> The path of the file to delete </param>
-    private void DeleteFile(string filePath)
+    /// <param name="file"> The file to read the key value pair from </param>
+    /// <param name="keyValuePair"> The deserialised key value pair if successful, otherwise the default value </param>
+    /// <returns> True if the key value pair was successfully retrieved, false if not </returns>
+    private bool TryGetKeyValuePairFromFile(FileInfo file, out KeyValuePair<TKey, TItem> keyValuePair)
     {
-        File.Delete(filePath);
+        var json = File.ReadAllText(file.FullName);
+        return TryDeserialiseJson(json, out keyValuePair);
     }
 }
