@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.Json;
 using mvc_console_app.Interfaces;
 
@@ -14,7 +15,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// Gets all items stored in the repository
     /// </summary>
     /// <returns> An enumerable of all items in the repository </returns>
-    public IEnumerable<TItem> Items
+    public IReadOnlyCollection<TItem> Items
     {
         get
         {
@@ -28,7 +29,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// Gets all keys stored in the repository
     /// </summary>
     /// <returns> An enumerable of all keys in the repository </returns>
-    public IEnumerable<TKey> Keys
+    public IReadOnlySet<TKey> Keys
     {
         get
         {
@@ -160,7 +161,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// </summary>
     /// <param name="keyValuePairs"> The given list of key value pairs </param>
     /// <returns> The list of items </returns>
-    private IEnumerable<TItem> GetItemsFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    private IReadOnlyCollection<TItem> GetItemsFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
     {
         List<TItem> items = [];
         foreach (var kvp in keyValuePairs)
@@ -205,9 +206,9 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     /// </summary>
     /// <param name="keyValuePairs"> The given list of key value pairs </param>
     /// <returns> The list of keys </returns>
-    private IEnumerable<TKey> GetKeysFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
+    private IReadOnlySet<TKey> GetKeysFromKeyValuePairs(IEnumerable<KeyValuePair<TKey, TItem>> keyValuePairs)
     {
-        List<TKey> keys = [];
+        HashSet<TKey> keys = [];
         foreach (var kvp in keyValuePairs)
         {
             keys.Add(kvp.Key);

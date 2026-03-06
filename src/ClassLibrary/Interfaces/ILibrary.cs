@@ -8,13 +8,14 @@ public interface ILibrary
 // TODO: Go through the methods and decide which should throw exceptions
 
     /// <summary>
-    /// Checks out a book to a library member, marking it as unavailable and adding it to the member's borrowed books
+    /// Checks out a book to a library member
     /// </summary>
     /// <param name="memberId">The member checking out the book</param>
     /// <param name="bookId">The book to be checked out</param>
+    /// <returns> True if the book was successfully checked out, false if it was not able to be checked out </>
     /// <exception cref="ArgumentException"> When an invalid member or book ID is passed </exception>
     /// <exception cref="InvalidOperationException"> For whatever other reason the book checkout failed </exception>
-    void CheckoutBook(Guid memberId, Guid bookId);
+    bool CheckoutBook(Guid memberId, Guid bookId);
 
     /// <summary>
     /// Takes the author and title, creates an id and then creates a book using those
@@ -63,13 +64,6 @@ public interface ILibrary
     IEnumerable<Member> GetAllMembers();
 
     /// <summary>
-    /// Finds and returns a specific book by its unique identifier
-    /// </summary>
-    /// <param name="bookId">The unique ID of the book to retrieve</param>
-    /// <returns>The <see cref="Book"/> with the specified ID, or null if no book is found</returns>
-    Book? GetBookById(Guid bookId);
-
-    /// <summary>
     /// Searches for books with a matching title
     /// </summary>
     /// <param name="title">The title to search for</param>
@@ -92,18 +86,32 @@ public interface ILibrary
     IEnumerable<Book> GetBooksCheckedOutByMember(Guid memberId);
 
     /// <summary>
-    /// Finds and returns a specific library member by their unique identifier
+    /// TODO: 
     /// </summary>
-    /// <param name="id">The unique ID of the member to retrieve</param>
-    /// <returns>The <see cref="Member"/> with the specified ID, or null if no member is found</returns>
-    Member? GetMemberById(Guid id);
+    /// <param name="bookId"></param>
+    /// <param name="book"></param>
+    /// <returns></returns>
+    bool TryGetBookById(Guid bookId, out Book book);
 
     /// <summary>
-    /// Returns a checked-out book to the library, marking it as available and removing it from the member's borrowed books
+    /// TODO: 
     /// </summary>
-    /// <param name="memberGuid">The member returning the book</param>
+    /// <param name="id"></param>
+    /// <param name="member"></param>
+    /// <returns></returns>
+    bool TryGetMember(Guid id, out Member member);
+
+    /// <summary>
+    /// Returns a checked-out book to the library
+    /// </summary>
     /// <param name="bookGuid">The book being returned</param>
-    /// <exception cref="ArgumentException"> When an invalid member or book ID is passed </exception>
-    /// <exception cref="InvalidOperationException"> For whatever other reason the book checkout failed </exception>
-    void ReturnBook(Guid memberId, Guid bookId);
+    /// <returns> True when the book was successfully returned, false if it was not checked-out </returns>
+    bool TryReturnBook(Guid bookId);
+    
+    /// <summary>
+    /// Tries to update an existing member
+    /// </summary>
+    /// <param name="member"> The member to update </param>
+    /// <returns> True if the member was successfully updated, false if not</returns>
+    bool TryUpdateMember (Member member);
 }

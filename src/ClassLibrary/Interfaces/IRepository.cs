@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace mvc_console_app.Interfaces;
 
 public interface IRepository<TKey, TItem> where TKey : notnull
@@ -6,13 +8,13 @@ public interface IRepository<TKey, TItem> where TKey : notnull
     /// TODO: finish documenting
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<TKey> Keys {get;}
+    public IReadOnlySet<TKey> Keys {get;}
 
     /// <summary>
     /// Gets the items stored in the repository
     /// </summary>
     /// <returns> An <see cref="IEnumerable{T}"/> of type <typeparamref name="TItem"/> </returns>
-    public IEnumerable<TItem> Items {get;}
+    public IReadOnlyCollection<TItem> Items {get;}
 
     /// <summary>
     /// Tries to create an item in the repository or, if the item already exists,

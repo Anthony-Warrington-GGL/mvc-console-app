@@ -62,7 +62,7 @@ public class EfLibraryModel : ILibrary
         throw new NotImplementedException();
     }
 
-    public Book? GetBookById(Guid bookId)
+    public Book? TryGetBookById(Guid bookId)
     {
         throw new NotImplementedException();
     }
@@ -82,7 +82,7 @@ public class EfLibraryModel : ILibrary
         throw new NotImplementedException();
     }
 
-    public Member? GetMemberById(Guid id)
+    public Member? TryGetMemberById(Guid id)
     {
         throw new NotImplementedException();
     }
