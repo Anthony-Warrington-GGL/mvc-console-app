@@ -51,7 +51,8 @@ public class LibraryController
 
     public Book? GetBookById(Guid id)
     {
-        return Library.TryGetBookById(id);
+        Library.TryGetBookById(id, out var book);
+        return book;
     }
 
     public IEnumerable<Book> GetBooksByAuthor(string author) => Library.GetBooksByAuthor(author);
@@ -62,7 +63,7 @@ public class LibraryController
     {
         try
         {
-            Library.TryReturnBook(member, book);
+            Library.TryReturnBook(book);
             return true;
         }
         

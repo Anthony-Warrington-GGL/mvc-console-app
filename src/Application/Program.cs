@@ -10,7 +10,7 @@ using mvc_console_app.UI;
 using mvc_console_app.Views;
 using MvcLibrary.UserInterfaces.Abstractions;
 
-// var repoDirectoryPath = "./repoFiles";
+var repoDirectoryPath = "./repoFiles";
 // var repository = new JsonRepository<Guid, Book>(repoDirectoryPath);
 
 // // create db before library
@@ -18,10 +18,14 @@ using MvcLibrary.UserInterfaces.Abstractions;
 // db.Database.EnsureDeleted();
 // db.Database.EnsureCreated();
 
+var bookRepository = new JsonRepository<Guid, Book>(repoDirectoryPath);
+var memberRepository = new JsonRepository<Guid, Member>(repoDirectoryPath);
+var ledgerRepository = new JsonRepository<Guid, LedgerEntry>(repoDirectoryPath);
+
 var guidManager = new GuidManager();
 //var library = new LibraryModel(guidManager); // old library
 //var library = new EfLibraryModel(db); // new library
-var library = new LibraryModel(guidManager);
+var library = new LibraryModel(guidManager, bookRepository, memberRepository, ledgerRepository);
 
 LibraryInitializer.Initialize(library);
 var controller = new LibraryController(library);

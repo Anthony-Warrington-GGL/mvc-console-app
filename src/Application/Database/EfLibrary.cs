@@ -122,4 +122,29 @@ public class EfLibraryModel : ILibrary
         // return member;
         throw new NotImplementedException();
     }
+
+    bool ILibrary.CheckoutBook(Guid memberId, Guid bookId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetBookById(Guid bookId, out Book book)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryGetMember(Guid id, out Member member)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryReturnBook(Guid bookId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool TryUpdateMember(Member member)
+    {
+        throw new NotImplementedException();
+    }
 }
