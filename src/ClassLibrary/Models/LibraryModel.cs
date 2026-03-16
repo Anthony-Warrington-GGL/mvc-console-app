@@ -172,10 +172,10 @@ public class LibraryModel : ILibrary
         foreach (var entry in allLedgerEntries)
         {
             // check if this entry is for the given member
-            if (LedgerEntryIsForMember(entry, memberId))
+            if (IsLedgerEntryForMember(entry, memberId))
             {
                 // check if the book is still checked out (not returned)
-                if (BookIsCheckedOut(entry))
+                if (IsBookCheckedOut(entry))
                 {
                     // get the book and add it to the collection
                     if (TryGetBookById(entry.LoanedBookId, out var book))
@@ -348,7 +348,7 @@ public class LibraryModel : ILibrary
     /// <param name="entry"> The ledger entry to check </param>
     /// <param name="memberId"> The member ID to check against </param>
     /// <returns> True if the entry belongs to the member, false otherwise </returns>
-    private bool LedgerEntryIsForMember(LedgerEntry entry, Guid memberId)
+    private bool IsLedgerEntryForMember(LedgerEntry entry, Guid memberId)
     {
         return entry.BorrowingMemberId == memberId;
     }
@@ -358,7 +358,7 @@ public class LibraryModel : ILibrary
     /// </summary>
     /// <param name="entry"> The ledger entry to check </param>
     /// <returns> True if the book is still checked out, false if it has been returned </returns>
-    private bool BookIsCheckedOut(LedgerEntry entry)
+    private bool IsBookCheckedOut(LedgerEntry entry)
     {
         return entry.ReturnedDate is null;
     }

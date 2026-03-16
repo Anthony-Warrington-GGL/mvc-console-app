@@ -227,7 +227,7 @@ public class JsonRepository<TKey, TItem> : IRepository<TKey, TItem>
     {
         try
         {
-            item = JsonSerializer.Deserialize<T>(json);
+            item = JsonSerializer.Deserialize<T>(json); // TODO: Learn about the other options for this method
             return true;
         }
         catch (JsonException ex)

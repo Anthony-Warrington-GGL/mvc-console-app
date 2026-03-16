@@ -81,7 +81,8 @@ public class MainMenuView
 
         var displayItemsView = CommonLibraryViews.DisplayBooksView(Ui);
         
-        displayItemsView.PresentItems("All Books", books);        
+        displayItemsView.PresentItems("All Books", books);
+        Ui.PresentItems("Number of books found: ", [$"{books.Count()}"]);
     }
 
     private void DisplayAllMembersFlow()
@@ -89,6 +90,7 @@ public class MainMenuView
         var view = CommonLibraryViews.DisplayMembersView(Ui);
 
         view.PresentItems("All Members", Controller.GetAllMembers());
+        Ui.PresentItems("Number of members found: ", [$"{Controller.GetAllMembers().Count()}"]);
     }
 
     private void ReturnBookFlow()

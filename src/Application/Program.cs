@@ -10,7 +10,7 @@ using mvc_console_app.UI;
 using mvc_console_app.Views;
 using MvcLibrary.UserInterfaces.Abstractions;
 
-var repoDirectoryPath = "./repoFiles";
+var repoDirectoryPath = @"C:\Dev\Mentoring\Learning Test Projects\mvc console app\src\Application\repoFiles";
 // var repository = new JsonRepository<Guid, Book>(repoDirectoryPath);
 
 // // create db before library
@@ -29,7 +29,7 @@ var library = new LibraryModel(guidManager, bookRepository, memberRepository, le
 
 LibraryInitializer.Initialize(library);
 var controller = new LibraryController(library);
-IUserInterface ui = new ConsoleUi();
+IUserInterface ui = new ConsoleUiDebug();
 var mainView = new MainMenuView(controller, ui);
 
 
